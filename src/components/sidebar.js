@@ -1,5 +1,5 @@
 import React from "react";
-import kotki1 from "D:/strona/src/kotki1.png"
+import kotki1 from "../kotki1.png"
 
 const Sidebar = () => {
   return (
