@@ -5,7 +5,6 @@ import { Analytics } from "@vercel/analytics/react"
 
 const Mainpage = () => {
   const length = 60;
-  <Analytics/>
   const days = Array.from({length}, (_, index) => index + 1);
   return (
     <div className="flex ">
@@ -13,7 +12,9 @@ const Mainpage = () => {
       <div className="flex-1 ml-64 min-h-screen bg-rose-200 p-2">
       <div><Days days={days}/></div>
       </div>
+      <Analytics />
     </div>
+
   )
 };
 
