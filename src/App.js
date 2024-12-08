@@ -11,11 +11,11 @@ const Mainpage = () => {
   const days = Array.from({length}, (_, index) => index + 1);
   return (
     <Router>
-    <div className="flex ">
+    <div className="flex">
       <div className="fixed">
         <Sidebar />
       </div> 
-      <div className="flex-1 ml-64 min-h-screen bg-rose-200 p-2">
+      <div className="flex-1 ml-64 h-screen bg-rose-200 p-2">
         <Routes>
         <Route path="/days" element={<Days days={days} />} />
         <Route path="/pliki" element={<Pliki/>}/>
