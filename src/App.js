@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Pliki from "./components/pliki";
 
 
+
 const Mainpage = () => {
   const length = 60;
   const days = Array.from({length}, (_, index) => index + 1);
