@@ -1,41 +1,64 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+const [file, setFile] = useState(null);
+const [imageUrl, setImageUrl] = useState("");
 
-const FileList = () => {
-    const [files, setFiles] = useState([]);
+const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+};
+const handleUpload = async () => {
+    if (!file) {
+        alert("Najpierw wybierz plik!");
+        return;
+    }
 
-    useEffect(() => {
-        // Pobieranie listy plików
-        const fetchFiles = async () => {
-            try {
-                const response = await fetch("http://localhost:5000/files");
-                const data = await response.json();
-                setFiles(data.files); // Zapisanie listy plików w stanie
-            } catch (error) {
-                console.error("Błąd podczas pobierania plików:", error);
-            }
-        };
+    const formData = new FormData();
+    formData.append("file", file);
 
-        fetchFiles();
-    }, []);
+    try {
+        const response = await fetch("http://localhost:5000/upload", {
+            method: "POST",
+            body: formData,
+        });
 
-    return (
-        <div>
-            <h2>Lista przesłanych plików:</h2>
-            <ul>
-                {files.map((file) => (
-                    <li key={file.public_id}>
-                        <a href={file.url} target="_blank" rel="noopener noreferrer">
-                            {file.url}
-                        </a>
-                        {/* Przycisk wyboru */}
-                        <button onClick={() => alert(`Wybrałeś plik: ${file.url}`)}>
-                            Wybierz
-                        </button>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
+        const data = await response.json();
+        if (response.ok) {
+            setImageUrl(data.url);
+            alert("Plik przesłany!");
+        } else {
+            alert("Błąd przesyłania.");
+        }
+    } catch (error) {
+        console.error("Błąd:", error);
+    }
 };
 
-export default FileList;
+
+const Pliki = () => {
+    return (
+        <div className="grid grid-cols-2 gap-3 grid-rows-[1fr_3fr_1fr] h-[90%] justify-center rounded m-10 p-3 bg-red-300">
+            <div className="flex items-center justify-center col-span-2">
+            <div className="bg-red-200 h-32 w-64 rounded flex items-center justify-center col-span-2">
+                <p className="opacity-50">Upuść plik</p>
+            </div>
+            </div>
+
+            <div className="bg-red-300 h-full w-full rounded flex items-center justify-center col-span-2">
+                hej
+            </div>
+            <div className="flex items-center justify-center">
+            <button className="bg-red-400 text-white rounded  h-12 w-24 ">
+                hej
+            </button>
+            </div>
+
+            <div className="flex items-center justify-center">
+            <button className="bg-red-400 text-white rounded  h-12 w-24 ">
+                hej
+            </button>
+            </div>
+            
+        </div>
+    );
+}
+
+export default Pliki;
