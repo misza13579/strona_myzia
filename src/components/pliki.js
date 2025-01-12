@@ -1,36 +1,4 @@
 import React from "react";
-const [file, setFile] = useState(null);
-const [imageUrl, setImageUrl] = useState("");
-
-const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-};
-const handleUpload = async () => {
-    if (!file) {
-        alert("Najpierw wybierz plik!");
-        return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-        const response = await fetch("http://localhost:5000/upload", {
-            method: "POST",
-            body: formData,
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-            setImageUrl(data.url);
-            alert("Plik przesłany!");
-        } else {
-            alert("Błąd przesyłania.");
-        }
-    } catch (error) {
-        console.error("Błąd:", error);
-    }
-};
 
 
 const Pliki = () => {

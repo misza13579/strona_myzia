@@ -7,12 +7,12 @@ const Sidebar = () => {
     <div className="top-0 left-0 h-screen w-64 
     shadow-lq bg-main_1 text-white">
         
-      <img className="left-5 top-5 w-32 shadow-xs  " src={kotki1}></img>
+      <img className="left-5 top-5 w-32 shadow-xs  " src={kotki1} alt="hihihi"></img>
       <ul>
         <li><Link to="/days">Plan</Link></li>
         <li><Link to="/pliki">Pliki</Link></li>
+        <li><Link to="/profile">Profil</Link></li>
       </ul>
-
     </div>
   );
 };

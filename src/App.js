@@ -4,6 +4,7 @@ import Days from "./components/days"; // Jeden z kafelków
 import { Analytics } from "@vercel/analytics/react"
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Pliki from "./components/pliki";
+import Profil from "./components/profile";
 
 
 
@@ -20,6 +21,7 @@ const Mainpage = () => {
         <Routes>
         <Route path="/days" element={<Days days={days} />} />
         <Route path="/pliki" element={<Pliki/>}/>
+        <Route path="/profile" element={<Profil/>}/>
         </Routes>
       </div>
       <Analytics />
