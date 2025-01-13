@@ -6,8 +6,7 @@ const Profile = () => {
         <div className='flex flex-col items-center justify-center'>
             <img src={profil} alt="profil" className="rounded-full h-32 w-32 shadow-lg"></img>
             <div className="flex flex-col items-center justify-center">
-                <h1 className="text-2xl font-bold">Jan Kowalski</h1>
-                <p className="text-sm">hej</p>
+                <h1 className="text-2xl font-bold">Myzia</h1>
         </div>
         </div>
     );
