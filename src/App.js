@@ -3,6 +3,7 @@ import Sidebar from "./components/sidebar";
 import Days from "./components/days"; // Jeden z kafelków
 import { Analytics } from "@vercel/analytics/react"
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import axios from 'axios';
 import Pliki from "./components/pliki";
 import Profile from "./components/profile";
 import Login from "./components/login";
