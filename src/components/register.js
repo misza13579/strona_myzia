@@ -15,7 +15,7 @@ const Register = () => {
         e.preventDefault();  // Zatrzymanie domyślnego działania formularza (przeładowanie strony)
     
         try {
-          const response = await axios.post(`${API_URL}/api/register`, {nick, email, password});
+          const response = await axios.post(`http://localhost:3000`, {nick, email, password});
           console.log('Rejestracja zakończona sukcesem', response);
           navigate('/login'); // Po udanej rejestracji przekierowanie do logowania
         } catch (err) {
