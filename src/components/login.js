@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 
-    const API_URL = process.env.REACT_APP_BACKEND_URL;
+    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');

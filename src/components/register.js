@@ -4,7 +4,6 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 const Register = () => {
-    const API_URL = process.env.REACT_APP_BACKEND_URL;
     const [nick, setNick] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

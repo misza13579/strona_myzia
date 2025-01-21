@@ -3,7 +3,7 @@ import profil from "../profile.jpg"
 import axios from 'axios';
 const Profile = () => {
 
-    const API_URL = process.env.REACT_APP_BACKEND_URL;
+    
     const [user, setUser] = useState(null);
 
     useEffect(() => {
