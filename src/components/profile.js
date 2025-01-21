@@ -11,7 +11,7 @@ const Profile = () => {
 
         if (token) {
             // Wysyłamy zapytanie z tokenem w nagłówku
-            axios.get(API_URL+"/profile", {headers: {
+            axios.get(`${API_URL}/api/profile`, {headers: {
                   Authorization: `Bearer ${token}`, 
                 },})
               .then((response) => {
