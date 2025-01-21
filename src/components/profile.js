@@ -23,7 +23,7 @@ const Profile = () => {
           } else {
             console.log('Nie ma tokenu');
           }
-        }, [API_URL]);
+        }, []);
       
         if (!user) return <p>Ładowanie...</p>;
 
