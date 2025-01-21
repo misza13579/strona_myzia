@@ -3,6 +3,7 @@ import profil from "../profile.jpg"
 import axios from 'axios';
 const Profile = () => {
 
+    const API_URL = process.env.REACT_APP_BACKEND_URL;
     const [user, setUser] = useState(null);
 
     useEffect(() => {
@@ -10,7 +11,7 @@ const Profile = () => {
 
         if (token) {
             // Wysyłamy zapytanie z tokenem w nagłówku
-            axios.get('http://localhost:5000/profile', {headers: {
+            axios.get(API_URL+"/profile", {headers: {
                   Authorization: `Bearer ${token}`, 
                 },})
               .then((response) => {

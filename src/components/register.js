@@ -4,7 +4,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 const Register = () => {
-
+    const API_URL = process.env.REACT_APP_BACKEND_URL;
     const [nick, setNick] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -15,7 +15,7 @@ const Register = () => {
         e.preventDefault();  // Zatrzymanie domyślnego działania formularza (przeładowanie strony)
     
         try {
-          const response = await axios.post('http://localhost:5000/register', {nick, email, password});
+          const response = await axios.post(API_URL+"/register", {nick, email, password});
           console.log('Rejestracja zakończona sukcesem', response);
           navigate('/login'); // Po udanej rejestracji przekierowanie do logowania
         } catch (err) {
