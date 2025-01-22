@@ -11,7 +11,7 @@ const Profile = () => {
 
         if (token) {
             // Wysyłamy zapytanie z tokenem w nagłówku
-            axios.get(`http://localhost:3000`, {headers: {
+            axios.get(`https://strona-myzia-backend-production.up.railway.app/profile`, {headers: {
                   Authorization: `Bearer ${token}`, 
                 },})
               .then((response) => {

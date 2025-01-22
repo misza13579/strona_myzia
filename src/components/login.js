@@ -18,10 +18,10 @@ const Login = () => {
         e.preventDefault();
     
         try {
-          const response = await axios.post(`http://localhost:3000`, {
-            email,
-            password,
-          });
+          try {
+            const response = await axios.post(`https://strona-myzia-backend-production.up.railway.app/login`, {email, password },    
+            {headers: {'Content-Type': 'application/json',
+          }});
           console.log('Logowanie zakończone sukcesem', response);
           localStorage.setItem('token', response.data.token); // Zapisanie tokenu w localStorage
           navigate('/profile'); // Po zalogowaniu przekierowanie do profilu
