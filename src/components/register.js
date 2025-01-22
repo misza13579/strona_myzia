@@ -14,7 +14,7 @@ const Register = () => {
         e.preventDefault();  // Zatrzymanie domyślnego działania formularza (przeładowanie strony)
     
         try {
-          const response = await axios.post(`strona-myzia-backend.railway.internal/register`, {nick, email, password});
+          const response = await axios.post(`https://strona-myzia-backend.railway.app/register`, { nick, email, password });
           console.log('Rejestracja zakończona sukcesem', response);
           navigate('/login'); // Po udanej rejestracji przekierowanie do logowania
         } catch (err) {
@@ -32,9 +32,9 @@ const Register = () => {
 
                 <form onSubmit={handleSubmit} className='flex flex-col items-center justify-center'>
 
-                <input type="text" value={nick} onChange={(e) => setNick(e.target.value)} placeholder="Twój nick" required className='border-2 boreder-red-500'></input>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Twój e-mail" required className='border-2 boreder-red-500'></input>
-                <input type="password"value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Twoje hasło" required className='border-2 boreder-red-500'></input>
+                <input type="text" value={nick} onChange={(e) => setNick(e.target.value)} placeholder="Twój nick" required className='border-2 border-red-500'></input>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Twój e-mail" required className='border-2 border-red-500'></input>
+                <input type="password"value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Twoje hasło" required className='border-2 border-red-500'></input>
                 <button type="submit" className='bg-red-500 text-white rounded  h-12 w-24 '>Zajerestuj się</button>
                 {error && <p style={{ color: 'red' }}>{error}</p>} 
                 </form>
