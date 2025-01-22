@@ -27,7 +27,7 @@ const Points = () => {
           }
         }, []);
       
-        if (!user) return <p>Ładowanie...</p>;
+        if (!myzia&&!myzio) return <p>Ładowanie...</p>;
     return (
         <div>
             <h1>Licznik punktów</h1>
