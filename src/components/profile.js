@@ -31,8 +31,7 @@ const Profile = () => {
         <div className='flex flex-col items-center justify-center'>
             <img src={profil} alt="profil" className="rounded-full h-32 w-32 shadow-lg"></img>
             <div className="flex flex-col items-center justify-center">
-                <h1 className="text-2xl font-bold">Myzia</h1>
-                <p>Nick: {user.nick}</p>
+                <h1 className="text-2xl font-bold">{user.nick}</h1>
                 <p>Email: {user.email}</p>
         </div>
         </div>
