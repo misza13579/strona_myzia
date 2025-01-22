@@ -14,7 +14,7 @@ const Register = () => {
         e.preventDefault();  // Zatrzymanie domyślnego działania formularza (przeładowanie strony)
     
         try {
-          const response = await axios.post(`http://strona-myzia-backend.railway.internal/register:3000`, { nick, email, password },    
+          const response = await axios.post(`https://strona-myzia-backend-production.up.railway.app/register`, { nick, email, password },    
           {headers: {'Content-Type': 'application/json',
         }});
           console.log('Rejestracja zakończona sukcesem', response);
