@@ -18,7 +18,7 @@ const Register = () => {
           console.log('Rejestracja zakończona sukcesem', response);
           navigate('/login'); // Po udanej rejestracji przekierowanie do logowania
         } catch (err) {
-          setError(err.response ? err.response.data : 'Wystąpił błąd');
+          setError(err.response ? err.response.data : err.message);
         }
       };
 
