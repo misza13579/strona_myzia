@@ -17,7 +17,6 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        try {
           try {
             const response = await axios.post(`https://strona-myzia-backend-production.up.railway.app/login`, {email, password },    
             {headers: {'Content-Type': 'application/json',
