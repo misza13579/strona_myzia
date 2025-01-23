@@ -26,6 +26,7 @@ const Points = () => {
               .finally(() => {
                 setLoading(false);
               });
+        }
         if (loading) return <p>Ładowanie...</p>;
     return (
         <div>
