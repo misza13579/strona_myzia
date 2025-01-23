@@ -27,12 +27,13 @@ const Points = () => {
           }
         }, []);
       
-        if (!points_myzia&&!points_myzio) return <p>Ładowanie...</p>;
+        if (points_myzia=0) return <p>Ładowanie...</p>;
     return (
         <div>
             <h1>Licznik punktów</h1>
             <div>
-                <p>das</p>
+                <p>{points_myzia}</p>
+                <p>{points_myzio}</p>
             </div>
         </div>
     );
