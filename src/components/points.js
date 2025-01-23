@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Points = () => {
@@ -26,8 +25,15 @@ const Points = () => {
               .finally(() => {
                 setLoading(false);
               });
+        } else {
+            // Brak tokenu
+            console.error('Brak tokenu');
+            setLoading(false);
         }
-        if (loading) return <p>Ładowanie...</p>;
+    }, []);
+
+    if (loading) return <p>Ładowanie...</p>;
+
     return (
         <div>
             <h1>Licznik punktów</h1>
@@ -37,6 +43,6 @@ const Points = () => {
             </div>
         </div>
     );
-};
+}
 
 export default Points;
