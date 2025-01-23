@@ -4,8 +4,9 @@ import axios from 'axios';
 
 const Points = () => {
 
-    const [points_myzia, setPoints_myzia] = useState(0);
-    const [points_myzio, setPoints_myzio] = useState(0);
+    const [points_myzia, setPoints_myzia] = useState(null);
+    const [points_myzio, setPoints_myzio] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -17,17 +18,15 @@ const Points = () => {
                 },})
               .then((response) => {
                 setPoints_myzio(response.data.myzio);
-                setPoints_myzia(response.data.myzia);  // Ustawiamy dane użytkownika
+                setPoints_myzia(response.data.myzia);
               })
               .catch((error) => {
                 console.error('Błąd autoryzacji', error);
+              })
+              .finally(() => {
+                setLoading(false);
               });
-          } else {
-            console.log('Nie ma tokenu');
-          }
-        }, []);
-      
-        if (points_myzia === 0) return <p>Ładowanie...</p>;
+        if (loading) return <p>Ładowanie...</p>;
     return (
         <div>
             <h1>Licznik punktów</h1>
