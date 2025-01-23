@@ -4,8 +4,8 @@ import axios from 'axios';
 
 const Points = () => {
 
-    const [points_myzia, setPoints_myzia] = useState(null);
-    const [points_myzio, setPoints_myzio] = useState(null);
+    const [points_myzia, setPoints_myzia] = useState(0);
+    const [points_myzio, setPoints_myzio] = useState(0);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -27,7 +27,7 @@ const Points = () => {
           }
         }, []);
       
-        if (points_myzia=0) return <p>Ładowanie...</p>;
+        if (points_myzia === 0) return <p>Ładowanie...</p>;
     return (
         <div>
             <h1>Licznik punktów</h1>
