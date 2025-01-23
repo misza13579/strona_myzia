@@ -32,7 +32,7 @@ const Login = () => {
         <div className='flex flex-col items-center justify-center '>
             <img src={profil} alt="profil" className="rounded-full h-32 w-32 shadow-lg"></img>
             <div className="flex flex-col items-center justify-center">
-                <h1 className="text-2xl font-bold">Myzia</h1>
+                <h1 className="text-2xl font-bold">Logownie</h1>
                 <p className="text-sm"></p>
 
                 <form onSubmit={handleSubmit} className='flex flex-col items-center justify-center'>
