@@ -3,6 +3,9 @@ import profil from "../profile.jpg"
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+
 const Register = () => {
     const [nick, setNick] = useState('');
     const [email, setEmail] = useState('');
