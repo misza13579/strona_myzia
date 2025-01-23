@@ -41,8 +41,7 @@ const Register = () => {
                 {error && <p style={{ color: 'red' }}>{error}</p>} 
                 </form>
 
-                <a href=" " className='text-blue-500'>Zapomniałeś hasła?</a>
-                <a href=" " className='text-blue-500'>Zajerestuj się</a>
+                <Link to="/login">Zaloguj się</Link>
         </div>
         </div>
     );
