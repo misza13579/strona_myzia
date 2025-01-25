@@ -28,7 +28,7 @@ const Profile = () => {
         if (!user) return <p>Ładowanie...</p>;
 
     return (
-        <div className='flex flex-col items-center justify-center'>
+        <div className='flex flex-col items-center justify-center font-myzia'>
             <img src={profil} alt="profil" className="rounded-full h-32 w-32 shadow-lg"></img>
             <div className="flex flex-col items-center justify-center">
                 <h1 className="text-2xl font-bold">{user.nick}</h1>

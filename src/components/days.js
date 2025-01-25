@@ -21,7 +21,7 @@ const Days = ({days}) => {
     setCurentSide(curentSide - 1);
   }
   return (
-    <div className="p-4">
+    <div className="p-4 font-myzia">
       <div className="grid grid-cols-4 gap-8 m-20 place-items-center">
        {days.map((day, index) => (
           <div 
