@@ -8,7 +8,7 @@ const Points = () => {
     const [zadanie_myzio, setZadanie_myzio] = useState(0);
     const [zadanie_myzia, setZadanie_myzia] = useState(0);
     const [punkty_myzia, setPunkty_myzia] = useState(0);
-    const [punkty_myzio, setPunkty_myzo] = useState(0);
+    const [punkty_myzio, setPunkty_myzio] = useState(0);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -97,7 +97,7 @@ const Points = () => {
               <div className='bg-red-400 h-16 w-80 m-2 p-1 rounded flex items-center justify-center'>
                 <form onSubmit={taskAdd_myzia} className='flex items-center justify-center  m-2 p-1 h-16 w-80'>
                 <textarea type="text" placeholder="Zadanie" onChange={(e) => setZadanie_myzio(e.target.value)} className='border-5 w-48 h-12 m-1 rounded text-s border-red-500'></textarea>
-                <input type="text" placeholder="" onChange={(e) => setPoints_myzia(e.target.value)} className='border-5 w-8 h-14 m-2 text-2xl rounded-xl text-center border-red-500'></input>
+                <input type="text" placeholder="" onChange={(e) => setPunkty_myzia(e.target.value)} className='border-5 w-8 h-14 m-2 text-2xl rounded-xl text-center border-red-500'></input>
                 <button type="submit" className='bg-green-400 rounded w-24 h-14 text-xl m-2 p-2 text-zinc-200 font-myzia'>Dodaj</button>
                 </form>
               </div>
@@ -111,7 +111,7 @@ const Points = () => {
               <div className='bg-red-400 h-16 w-80 m-2 p-1 rounded flex items-center justify-center'>
                 <form onSubmit={taskAdd_myzio} className='flex items-center justify-center  m-2 p-1 h-16 w-80'>
                 <textarea type="text" placeholder="Zadanie" onChange={(e) => setZadanie_myzia(e.target.value)} className='border-5 w-48 h-12 m-1 rounded text-s border-red-500'></textarea>
-                <input type="text" placeholder="" onChange={(e) => setPoints_myzio(e.target.value)} className='border-5 w-8 h-14 m-2 text-2xl rounded-xl text-center border-red-500'></input>
+                <input type="text" placeholder="" onChange={(e) => setPunkty_myzio(e.target.value)} className='border-5 w-8 h-14 m-2 text-2xl rounded-xl text-center border-red-500'></input>
                 <button type="submit" className='bg-green-400 rounded w-24 h-14 text-xl m-2 p-2 text-zinc-200 font-myzia'>Dodaj</button>
                 </form>
               </div>
