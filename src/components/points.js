@@ -5,8 +5,8 @@ const Points = () => {
 
     const [points_myzia, setPoints_myzia] = useState(0);
     const [points_myzio, setPoints_myzio] = useState(0);
-    const [zadanie_myzio, setZadanie_myzio] = useState(0);
-    const [zadanie_myzia, setZadanie_myzia] = useState(0);
+    const [zadanie_myzio, setZadanie_myzio] = useState('');
+    const [zadanie_myzia, setZadanie_myzia] = useState('');
     const [punkty_myzia, setPunkty_myzia] = useState(0);
     const [punkty_myzio, setPunkty_myzio] = useState(0);
     const [loading, setLoading] = useState(true);
