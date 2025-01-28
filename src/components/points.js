@@ -20,8 +20,8 @@ const Points = () => {
                   Authorization: `Bearer ${token}`, 
                 },})
               .then((response) => {
-                setPoints_myzio(response.data.myzio_points);
-                setPoints_myzia(response.data.myzia_points);
+                setPoints_myzio(response.data.myzio);
+                setPoints_myzia(response.data.myzia);
               })
               .catch((error) => {
                 console.error('Błąd autoryzacji', error);
