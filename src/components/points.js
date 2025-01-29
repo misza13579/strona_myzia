@@ -16,7 +16,7 @@ const Points = () => {
         const receivedData = JSON.parse(event.data);
         setData(receivedData);
       };
-      return () => socket.close();
+      return () => ws.close();
     }, []);
 
     const taskAdd_myzia = async (e) => {
