@@ -11,7 +11,7 @@ const Points = () => {
     const [data, setData] = useState({ myzia: 0, myzio: 0 });
 
     useEffect(() => {
-      const socket = new WebSocket("ws://localhost:8080");
+      const socket = new WebSocket("ws://localhost:8000");
 
       socket.onmessage = (event) => {
         const receivedData = JSON.parse(event.data);
