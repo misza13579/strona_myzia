@@ -3,37 +3,21 @@ import axios from 'axios';
 
 const Points = () => {
 
-    const [points_myzia, setPoints_myzia] = useState(0);
-    const [points_myzio, setPoints_myzio] = useState(0);
     const [zadanie_myzio, setZadanie_myzio] = useState('');
     const [zadanie_myzia, setZadanie_myzia] = useState('');
     const [punkty_myzia, setPunkty_myzia] = useState(0);
     const [punkty_myzio, setPunkty_myzio] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [data, setData] = useState({ myzia: 0, myzio: 0 });
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+      const socket = new WebSocket("ws://localhost:8080");
 
-        if (token) {
-            // Wysyłamy zapytanie z tokenem w nagłówku
-            axios.get(`https://strona-myzia-backend-production.up.railway.app/points`, {headers: {
-                  Authorization: `Bearer ${token}`, 
-                },})
-              .then((response) => {
-                setPoints_myzio(response.data.myzio);
-                setPoints_myzia(response.data.myzia);
-              })
-              .catch((error) => {
-                console.error('Błąd autoryzacji', error);
-              })
-              .finally(() => {
-                setLoading(false);
-              });
-        } else {
-            // Brak tokenu
-            console.error('Brak tokenu');
-            setLoading(false);
-        }
+      socket.onmessage = (event) => {
+        const receivedData = JSON.parse(event.data);
+        setData(receivedData);
+      };
+      return () => socket.close();
     }, []);
 
     const taskAdd_myzia = async (e) => {
@@ -75,7 +59,7 @@ const Points = () => {
           <div className="flex items-center justify-center col-span-1">
           <div className="bg-red-200 h-32 w-64 rounded flex items-center justify-center">
             <p className="font-medium text-3xl">Punkty myzia: </p>
-            <p className="font-medium text-3xl">{points_myzia}</p>
+            <p className="font-medium text-3xl">{data.myzia}</p>
           </div>
           </div>
 
@@ -88,7 +72,7 @@ const Points = () => {
           <div className="flex items-center justify-center col-span-1">
           <div className="bg-red-200 h-32 w-64 rounded flex items-center justify-center">
           <p className="font-medium text-3xl font-myzia">Punkty myzio: </p>
-          <p className="font-medium text-3xl font-myzia">{points_myzio}</p>
+          <p className="font-medium text-3xl font-myzia">{data.myzio}</p>
           </div>
           </div>
     
