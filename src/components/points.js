@@ -7,7 +7,6 @@ const Points = () => {
     const [zadanie_myzia, setZadanie_myzia] = useState('');
     const [punkty_myzia, setPunkty_myzia] = useState(0);
     const [punkty_myzio, setPunkty_myzio] = useState(0);
-    const [loading, setLoading] = useState(true);
     const [data, setData] = useState({ myzia: 0, myzio: 0 });
 
     useEffect(() => {
@@ -51,7 +50,6 @@ const Points = () => {
     };
  
  
-    if (loading) return <p>Ładowanie...</p>;
 
     return (
         <div className="grid grid-cols-3 grid-rows-3 font-myzia gap-3 h-[90%] justify-center rounded m-10 p-3 bg-red-300">
