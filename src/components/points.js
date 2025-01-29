@@ -16,6 +16,7 @@ const Points = () => {
       socket.onmessage = (event) => {
         const receivedData = JSON.parse(event.data);
         setData(receivedData);
+        setLoading(false);
       };
       return () => socket.close();
     }, []);
