@@ -4,10 +4,10 @@ const PointsTask = () => {
 const [data, setData] = useState([]);
 
 const connectWebSocket = useCallback(() => {
-      const ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app:443/ws/Task');
+      const ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/wsTask');
     
       ws.onopen = () => {
-        console.log(' WebSocket połączony');
+        console.log(' WebSocket task połączony');
       };
   
       ws.onmessage = (event) => {

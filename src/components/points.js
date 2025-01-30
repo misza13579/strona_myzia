@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback  } from 'react';
 import axios from 'axios';
-import PointsTask from './pointsTask';
+//import PointsTask from './pointsTask';
 
 const Points = () => {
 
@@ -12,7 +12,7 @@ const Points = () => {
 
 
     const connectWebSocket = useCallback(() => {
-      const ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app:443/ws');
+      const ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
     
       ws.onopen = () => {
         console.log(' WebSocket połączony');
@@ -29,13 +29,21 @@ const Points = () => {
         setTimeout(connectWebSocket, 5000); // Próba ponownego połączenia po 5s
       };
 
-      return () => ws.close();
+      return ws; 
 
     }, []);
     
     useEffect(() => {
-      connectWebSocket();
-    }, [connectWebSocket]);
+      const ws = connectWebSocket();
+      
+      // Cleanup funkcji w useEffect, aby zamknąć połączenie, gdy komponent zostanie odmontowany
+      return () => {
+          if (ws) {
+              ws.close();
+              console.log('WebSocket zamknięty');
+          }
+      };
+  }, [connectWebSocket]); 
   
 
     const taskAdd_myzia = async (e) => {
@@ -116,7 +124,6 @@ const Points = () => {
                 <button type="submit" className='bg-green-400 rounded w-24 h-14 text-xl m-2 p-2 text-zinc-200 font-myzia'>Dodaj</button>
                 </form>
               </div>
-              <PointsTask />
             </div>
           </div> 
         </div>
