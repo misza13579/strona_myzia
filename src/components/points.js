@@ -42,11 +42,12 @@ const Points = () => {
     
         // Czyszczenie połączenia przy odmontowywaniu komponentu
         return () => {
-          if (socket) {
-            socket.close();
+          if (ws.readyState === WebSocket.OPEN) {
+            ws.close();  // Zamykamy połączenie tylko, jeśli jest otwarte
             console.log('Połączenie WebSocket zamknięte przy odmontowaniu');
           }
         };
+      
       }, []);
     
   
