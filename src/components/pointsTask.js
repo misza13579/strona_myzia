@@ -1,67 +1,56 @@
-import React, { useState, useEffect, useCallback  } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 const PointsTask = () => {
-const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
 
-const connectWebSocket = useCallback(() => {
-      const ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/wsTask');
-    
-      ws.onopen = () => {
-        console.log(' WebSocket task połączony');
-      };
-  
-      ws.onmessage = (event) => {
-        console.log('Otrzymano zadania: ', event.data);  // Dodaj logowanie dla otrzymanych danych
-        const receivedData = JSON.parse(event.data);
-        setData(receivedData);  // Aktualizujemy stan danymi z serwera
-      };
-    
-      ws.onclose = () => {
-        console.log("Połączenie WebSocket zerwane, ponawiam próbę...");
-        setTimeout(connectWebSocket, 5000); // Próba ponownego połączenia po 5s
-      };
+  const connectWebSocket = useCallback(() => {
+    const ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/wsTask');
 
-      return () => ws.close();
+    ws.onopen = () => {
+      console.log('WebSocket task połączony');
+    };
 
-    }, []);
-    
-    useEffect(() => {
-      connectWebSocket();
-    }, [connectWebSocket]);
+    ws.onmessage = (event) => {
+      console.log('Otrzymano zadania: ', event.data);  // Dodaj logowanie dla otrzymanych danych
+      const receivedData = JSON.parse(event.data);
+      setData(receivedData);  // Aktualizujemy stan danymi z serwera
+    };
 
+    ws.onclose = () => {
+      console.log("Połączenie WebSocket zerwane, ponawiam próbę...");
+      setTimeout(connectWebSocket, 5000); // Próba ponownego połączenia po 5s
+    };
 
+    // Funkcja do zamknięcia połączenia
+    return () => ws.close();
 
+  }, []);
 
-    return (
+  useEffect(() => {
+    connectWebSocket();
+  }, [connectWebSocket]);
+
+  return (
     <div>
-        <ul>
-        {data.tresc_myzio.map((data, index) => (
-          
-          <li key={index}>
-            <div className='bg-red-400 rounded flex items-center justify-center m-2 p-1 h-16 w-80'>
-        <p className='border-5 w-8 h-14 m-2 text-2xl rounded-xl text-center border-red-500'>
-        {data.tresc_myzio}aa
-        </p>
-        
-        <p className='border-5 w-8 h-14 m-2 text-2xl rounded-xl text-center border-red-500'>
-
-        </p>
-      </div>
+      <ul>
+        {/* Sprawdzamy, czy mamy dane, zanim zaczniemy renderować */}
+        {data && data.length > 0 ? (
+          data.map((item, index) => (
+            <li key={index}>
+              <div className='bg-red-400 rounded flex items-center justify-center m-2 p-1 h-16 w-80'>
+                {/* Zmieniamy sposób wyświetlania treści zadania */}
+                <p className='border-5 w-8 h-14 m-2 text-2xl rounded-xl text-center border-red-500'>
+                  {item.tresc_myzio} {/* Zmieniamy na poprawną nazwę właściwości */}
+                </p>
+              </div>
             </li>
-        ))}
-                <div className='bg-red-400 rounded flex items-center justify-center m-2 p-1 h-16 w-80'>
-        <p className='border-5 w-8 h-14 m-2 text-2xl rounded-xl text-center border-red-500'>
-        
-        </p>
-        
-        <p className='border-5 w-8 h-14 m-2 text-2xl rounded-xl text-center border-red-500'>
-
-        </p>
-      </div>
+          ))
+        ) : (
+          <li>Brak danych do wyświetlenia</li>
+        )}
       </ul>
     </div>
-        
-    );
+  );
 };
 
 export default PointsTask;
