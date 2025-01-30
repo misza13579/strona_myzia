@@ -12,44 +12,46 @@ const Points = () => {
     const [data, setData] = useState({ myzia: 0, myzio: 0 });
     const wsRef = useRef(null);
 
-    
-      useEffect(() => {
-        // Utworzenie połączenia WebSocket
+    useEffect(() => {
+      // Sprawdzamy, czy połączenie już istnieje
+      if (!wsRef.current) {
+        // Tworzymy nowe połączenie WebSocket, jeśli jeszcze nie istnieje
         wsRef.current = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
         const socket = wsRef.current;
+  
         // Nasłuchiwanie na otwarcie połączenia
         socket.onopen = () => {
           console.log('Połączenie WebSocket otwarte');
           setConnected(true);
         };
-    
+  
         // Nasłuchiwanie na przychodzące wiadomości
         socket.onmessage = (event) => {
           console.log('Otrzymano dane: ', event.data);
           const receivedData = JSON.parse(event.data);
-          setData(receivedData);  // Aktualizujemy stan danymi z serwera
+          setData(receivedData); // Aktualizujemy stan danymi z serwera
         };
-    
+  
         // Nasłuchiwanie na błędy połączenia
         socket.onerror = (error) => {
           console.error('Błąd WebSocket:', error);
         };
-    
+  
         // Nasłuchiwanie na zamknięcie połączenia
         socket.onclose = () => {
           console.log('Połączenie WebSocket zamknięte');
           setConnected(false);
         };
-    
-        // Czyszczenie połączenia przy odmontowywaniu komponentu
-        return () => {
-          if (socket.readyState === WebSocket.OPEN) {
-            socket.close();  // Zamykamy połączenie tylko, jeśli jest otwarte
-            console.log('Połączenie WebSocket zamknięte przy odmontowaniu');
-          }
-        };
-      
-      }, []);
+      }
+  
+      // Czyszczenie połączenia przy odmontowywaniu komponentu
+      return () => {
+        // Jeśli połączenie zostało utworzone, nie zamykamy go przy odmontowywaniu komponentu
+        // socket.close(); // Usuwamy tę linię, aby nie zamykać połączenia
+        console.log('Połączenie WebSocket nie zostanie zamknięte');
+      };
+    }, []); // pusta tablica zależności oznacza, że efekt zostanie uruchomiony tylko raz, przy montowaniu komponentu
+  
     
   
 
