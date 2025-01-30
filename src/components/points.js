@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import axios from 'axios';
 
 const Points = () => {
@@ -9,15 +9,38 @@ const Points = () => {
     const [punkty_myzio, setPunkty_myzio] = useState(0);
     const [data, setData] = useState({ myzia: 0, myzio: 0 });
 
-    useEffect(() => {
-      const ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
+    const wsRef = useRef(null);  // Używamy useRef do przechowywania WebSocket
 
-      ws.onmessage = (event) => {
-        const receivedData = JSON.parse(event.data);
-        setData(receivedData);
+    useEffect(() => {
+      // Tworzymy nowe połączenie WebSocket
+      const ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
+      wsRef.current = ws;  // Przechowujemy WebSocket w useRef
+  
+      ws.onopen = () => {
+        console.log(' WebSocket połączony');
       };
-      return () => ws.close();
-    }, []);
+  
+      ws.onmessage = (event) => {
+        console.log('Otrzymano dane: ', event.data);  // Dodaj logowanie dla otrzymanych danych
+        const receivedData = JSON.parse(event.data);
+        setData(receivedData);  // Aktualizujemy stan danymi z serwera
+      };
+  
+      ws.onerror = (error) => {
+        console.error('❗ WebSocket błąd:', error);
+      };
+  
+      ws.onclose = () => {
+        console.log('WebSocket połączenie zamknięte');
+      };
+  
+      // Funkcja czyszcząca przy odmontowaniu komponentu
+      return () => {
+        if (wsRef.current) {
+          wsRef.current.close();  // Zamykamy połączenie WebSocket
+        }
+      };
+    }, []);  
 
     const taskAdd_myzia = async (e) => {
       const token = localStorage.getItem('token');
