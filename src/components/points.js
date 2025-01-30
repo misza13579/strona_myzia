@@ -12,7 +12,7 @@ const Points = () => {
 
 
     const connectWebSocket = useCallback(() => {
-      const ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
+      let ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
     
       ws.onopen = () => {
         console.log(' WebSocket połączony');
