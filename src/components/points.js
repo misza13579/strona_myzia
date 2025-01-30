@@ -11,15 +11,10 @@ const Points = () => {
 
 
     const connectWebSocket = useCallback(() => {
-      const ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
+      const ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app:443/ws');
     
       ws.onopen = () => {
         console.log(' WebSocket połączony');
-        setInterval(() => {
-          if (ws.readyState === WebSocket.OPEN) {
-            ws.send(JSON.stringify({ type: "ping" }));
-          }
-        }, 5000); // Wysyłamy ping co 30 sekund
       };
   
       ws.onmessage = (event) => {
@@ -34,7 +29,7 @@ const Points = () => {
       };
 
       return () => ws.close();
-      
+
     }, []);
     
     useEffect(() => {
