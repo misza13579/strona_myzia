@@ -10,12 +10,13 @@ const Points = () => {
     const [punkty_myzio, setPunkty_myzio] = useState(0);
     const [connected, setConnected] = useState(false); // Stan połączenia
     const [data, setData] = useState({ myzia: 0, myzio: 0 });
+    const wsRef = useRef(null);
 
     
       useEffect(() => {
         // Utworzenie połączenia WebSocket
-        const socket = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws'); // Zastąp adres URL swoim
-    
+        wsRef.current = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
+        const socket = wsRef.current;
         // Nasłuchiwanie na otwarcie połączenia
         socket.onopen = () => {
           console.log('Połączenie WebSocket otwarte');
@@ -42,8 +43,8 @@ const Points = () => {
     
         // Czyszczenie połączenia przy odmontowywaniu komponentu
         return () => {
-          if (ws.readyState === WebSocket.OPEN) {
-            ws.close();  // Zamykamy połączenie tylko, jeśli jest otwarte
+          if (socket.readyState === WebSocket.OPEN) {
+            socket.close();  // Zamykamy połączenie tylko, jeśli jest otwarte
             console.log('Połączenie WebSocket zamknięte przy odmontowaniu');
           }
         };
