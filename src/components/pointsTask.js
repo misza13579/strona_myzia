@@ -35,7 +35,7 @@ const connectWebSocket = useCallback(() => {
     return (
     <div>
         <ul>
-        {data.map((data, index) => (
+        {data.tresc_myzio.map((data, index) => (
           
           <li key={index}>
             <div className='bg-red-400 rounded flex items-center justify-center m-2 p-1 h-16 w-80'>
