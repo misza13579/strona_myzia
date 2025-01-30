@@ -10,7 +10,7 @@ const Points = () => {
     const [data, setData] = useState({ myzia: 0, myzio: 0 });
 
     useEffect(() => {
-      const ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
+      const ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws:3000');
 
       ws.onmessage = (event) => {
         const receivedData = JSON.parse(event.data);
