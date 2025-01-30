@@ -9,6 +9,8 @@ const Points = () => {
     const [punkty_myzia, setPunkty_myzia] = useState(0);
     const [punkty_myzio, setPunkty_myzio] = useState(0);
     const [connected, setConnected] = useState(false); // Stan połączenia
+    const [data, setData] = useState({ myzia: 0, myzio: 0 });
+
     
       useEffect(() => {
         // Utworzenie połączenia WebSocket
@@ -21,8 +23,10 @@ const Points = () => {
         };
     
         // Nasłuchiwanie na przychodzące wiadomości
-        socket.onmessage = (event) => {
-          console.log('Otrzymano wiadomość:', event.data);
+        ws.onmessage = (event) => {
+          console.log('Otrzymano dane: ', event.data);
+          const receivedData = JSON.parse(event.data);
+          setData(receivedData);  // Aktualizujemy stan danymi z serwera
         };
     
         // Nasłuchiwanie na błędy połączenia
