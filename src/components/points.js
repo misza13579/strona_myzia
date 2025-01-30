@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef  } from 'react';
 import axios from 'axios';
-import PointsTask from './pointsTask';
+//import PointsTask from './pointsTask';
 
 const Points = () => {
 
@@ -133,7 +133,6 @@ const Points = () => {
                 <button type="submit" className='bg-green-400 rounded w-24 h-14 text-xl m-2 p-2 text-zinc-200 font-myzia'>Dodaj</button>
                 </form>
               </div>
-              <PointsTask />
             </div>
           </div> 
         </div>
