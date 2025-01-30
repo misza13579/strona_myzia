@@ -30,6 +30,7 @@ const Points = () => {
 
       ws.onclose = () => {
         console.log("Połączenie WebSocket zerwane, ponawiam próbę...");
+        console.log("Stan połączenia: ", ws.readyState);
         setTimeout(connectWebSocket, 5000); // Próba ponownego połączenia po 5s
       };
 
