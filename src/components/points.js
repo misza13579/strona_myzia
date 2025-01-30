@@ -1,58 +1,50 @@
-import React, { useState, useEffect, useRef  } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import PointsTask from './pointsTask';
 
 const Points = () => {
-
-    const [zadanie_myzio, setZadanie_myzio] = useState('');
     const [zadanie_myzia, setZadanie_myzia] = useState('');
+    const [zadanie_myzio, setZadanie_myzio] = useState('');
     const [punkty_myzia, setPunkty_myzia] = useState(0);
     const [punkty_myzio, setPunkty_myzio] = useState(0);
-    const [connected, setConnected] = useState(false); // Stan połączenia
+    const [connected, setConnected] = useState(false);
     const [data, setData] = useState({ myzia: 0, myzio: 0 });
     const wsRef = useRef(null);
 
     useEffect(() => {
-      // Sprawdzamy, czy połączenie już istnieje
-      if (!wsRef.current) {
-        // Tworzymy nowe połączenie WebSocket, jeśli jeszcze nie istnieje
-        wsRef.current = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
-        const socket = wsRef.current;
-  
-        // Nasłuchiwanie na otwarcie połączenia
-        socket.onopen = () => {
-          console.log('Połączenie WebSocket otwarte');
-          setConnected(true);
-        };
-  
-        // Nasłuchiwanie na przychodzące wiadomości
-        socket.onmessage = (event) => {
-          console.log('Otrzymano dane: ', event.data);
-          const receivedData = JSON.parse(event.data);
-          setData(receivedData); // Aktualizujemy stan danymi z serwera
-        };
-  
-        // Nasłuchiwanie na błędy połączenia
-        socket.onerror = (error) => {
-          console.error('Błąd WebSocket:', error);
-        };
-  
-        // Nasłuchiwanie na zamknięcie połączenia
-        socket.onclose = () => {
-          console.log('Połączenie WebSocket zamknięte');
-          setConnected(false);
-        };
-      }
-  
-      // Czyszczenie połączenia przy odmontowywaniu komponentu
-      return () => {
+        const connectWebSocket = () => {
+            wsRef.current = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
 
-        console.log('Połączenie WebSocket nie zostanie zamknięte');
-      };
-    }, []); // pusta tablica zależności oznacza, że efekt zostanie uruchomiony tylko raz, przy montowaniu komponentu
-  
-    
-  
+            wsRef.current.onopen = () => {
+                console.log('Połączenie WebSocket otwarte');
+                setConnected(true);
+            };
+
+            wsRef.current.onmessage = (event) => {
+                console.log('Otrzymano dane:', event.data);
+                setData(JSON.parse(event.data));
+            };
+
+            wsRef.current.onerror = (error) => {
+                console.error('Błąd WebSocket:', error);
+            };
+
+            wsRef.current.onclose = () => {
+                console.log('Połączenie WebSocket zamknięte');
+                setConnected(false);
+                setTimeout(connectWebSocket, 5000); // 🔄 Automatyczna ponowna próba po 5s
+            };
+        };
+
+        connectWebSocket();
+
+        return () => {
+            if (wsRef.current) {
+                wsRef.current.close();
+            }
+        };
+    }, []);
+
 
     const taskAdd_myzia = async (e) => {
       const token = localStorage.getItem('token');
@@ -137,6 +129,6 @@ const Points = () => {
           </div> 
         </div>
     );
-}
+};
 
 export default Points;
