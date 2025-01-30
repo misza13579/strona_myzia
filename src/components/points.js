@@ -14,6 +14,26 @@ const Points = () => {
     const connectWebSocket = useCallback(() => {
       let ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
     
+
+      const PONG_TIMEOUT = 5000; // 5 sekund na odpowiedź na ping
+let pongTimeout;
+
+// Kiedy serwer wysyła ping, wysyłamy odpowiedź pong
+ws.onping = function (event) {
+    console.log('Otrzymano ping, wysyłam pong');
+    ws.pong('pong');  // Wysyłamy odpowiedź na ping (pong)
+};
+
+// Kiedy otrzymamy odpowiedź pong od serwera
+ws.onpong = function (event) {
+    console.log('Otrzymano pong od serwera');
+    clearTimeout(pongTimeout);  // Resetujemy timeout
+    pongTimeout = setTimeout(() => {
+        console.log('Brak odpowiedzi od serwera, zamykam połączenie');
+        ws.close();  // Jeśli nie otrzymamy ping, zamykamy połączenie
+    }, PONG_TIMEOUT);  // Czekamy na ping od serwera przez określony czas
+};
+
       ws.onopen = () => {
         console.log(' WebSocket połączony');
       };
