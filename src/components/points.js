@@ -85,7 +85,7 @@ const Points = () => {
           <div className="flex items-center justify-center col-span-1">
           <div className="bg-red-200 h-32 w-64 rounded flex items-center justify-center">
             <p className="font-medium text-3xl">Punkty myzia:{connected} </p>
-            <p className="font-medium text-3xl">{data.myzia}</p>
+            <p className="font-medium text-3xl"></p>
           </div>
           </div>
 
@@ -98,7 +98,7 @@ const Points = () => {
           <div className="flex items-center justify-center col-span-1">
           <div className="bg-red-200 h-32 w-64 rounded flex items-center justify-center">
           <p className="font-medium text-3xl font-myzia">Punkty myzio: </p>
-          <p className="font-medium text-3xl font-myzia">{data.myzio}</p>
+          <p className="font-medium text-3xl font-myzia"></p>
           </div>
           </div>
     
