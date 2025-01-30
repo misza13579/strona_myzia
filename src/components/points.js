@@ -27,7 +27,7 @@ const Points = () => {
         console.log("Połączenie WebSocket zerwane, ponawiam próbę...");
         setTimeout(connectWebSocket, 5000); // Próba ponownego połączenia po 5s
       };
-    });
+    }, []);
     
     useEffect(() => {
       connectWebSocket();
