@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef  } from 'react';
 import axios from 'axios';
-//import PointsTask from './pointsTask';
+import PointsTask from './pointsTask';
 
 const Points = () => {
 
@@ -46,8 +46,7 @@ const Points = () => {
   
       // Czyszczenie połączenia przy odmontowywaniu komponentu
       return () => {
-        // Jeśli połączenie zostało utworzone, nie zamykamy go przy odmontowywaniu komponentu
-        // socket.close(); // Usuwamy tę linię, aby nie zamykać połączenia
+
         console.log('Połączenie WebSocket nie zostanie zamknięte');
       };
     }, []); // pusta tablica zależności oznacza, że efekt zostanie uruchomiony tylko raz, przy montowaniu komponentu
@@ -133,6 +132,7 @@ const Points = () => {
                 <button type="submit" className='bg-green-400 rounded w-24 h-14 text-xl m-2 p-2 text-zinc-200 font-myzia'>Dodaj</button>
                 </form>
               </div>
+              <PointsTask />
             </div>
           </div> 
         </div>
