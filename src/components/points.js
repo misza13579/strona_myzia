@@ -9,13 +9,10 @@ const Points = () => {
     const [punkty_myzio, setPunkty_myzio] = useState(0);
     const [data, setData] = useState({ myzia: 0, myzio: 0 });
 
-    const wsRef = useRef(null);  // Używamy useRef do przechowywania WebSocket
 
-    useEffect(() => {
-      // Tworzymy nowe połączenie WebSocket
+    const connectWebSocket = () => {
       const ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
-      wsRef.current = ws;  // Przechowujemy WebSocket w useRef
-  
+    
       ws.onopen = () => {
         console.log(' WebSocket połączony');
       };
@@ -25,22 +22,17 @@ const Points = () => {
         const receivedData = JSON.parse(event.data);
         setData(receivedData);  // Aktualizujemy stan danymi z serwera
       };
-  
-      ws.onerror = (error) => {
-        console.error('❗ WebSocket błąd:', error);
-      };
-  
+    
       ws.onclose = () => {
-        console.log('WebSocket połączenie zamknięte');
+        console.log("Połączenie WebSocket zerwane, ponawiam próbę...");
+        setTimeout(connectWebSocket, 5000); // Próba ponownego połączenia po 5s
       };
+    };
+    
+    useEffect(() => {
+      connectWebSocket();
+    }, []);
   
-      // Funkcja czyszcząca przy odmontowaniu komponentu
-      return () => {
-        if (wsRef.current) {
-          wsRef.current.close();  // Zamykamy połączenie WebSocket
-        }
-      };
-    }, []);  
 
     const taskAdd_myzia = async (e) => {
       const token = localStorage.getItem('token');
