@@ -13,64 +13,87 @@ const Points = () => {
 
     const connectWebSocket = useCallback(() => {
       let ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
-    
-
+      let pongTimeout;
       const PONG_TIMEOUT = 5000; // 5 sekund na odpowiedź na ping
-let pongTimeout;
-
-// Kiedy serwer wysyła ping, wysyłamy odpowiedź pong
-ws.onping = function (event) {
-    console.log('Otrzymano ping, wysyłam pong');
-    ws.pong('pong');  // Wysyłamy odpowiedź na ping (pong)
-};
-
-// Kiedy otrzymamy odpowiedź pong od serwera
-ws.onpong = function (event) {
-    console.log('Otrzymano pong od serwera');
-    clearTimeout(pongTimeout);  // Resetujemy timeout
-    pongTimeout = setTimeout(() => {
-        console.log('Brak odpowiedzi od serwera, zamykam połączenie');
-        ws.close();  // Jeśli nie otrzymamy ping, zamykamy połączenie
-    }, PONG_TIMEOUT);  // Czekamy na ping od serwera przez określony czas
-};
-
-      ws.onopen = () => {
-        console.log(' WebSocket połączony');
+      const PING_INTERVAL = 30000; // Wysyłanie ping co 30 sekund
+    
+      // Funkcja do wysyłania ping
+      const sendPing = () => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send('ping');  // Możesz wysłać niestandardowy ping
+          console.log('Wysyłam ping do serwera');
+        }
       };
-  
+    
+      // Ustawienie interwału wysyłania pingów
+      const pingInterval = setInterval(sendPing, PING_INTERVAL);
+    
+      // Obsługuje otwarcie połączenia
+      ws.onopen = () => {
+        console.log('WebSocket połączony');
+      };
+    
+      // Obsługuje wiadomości od serwera
       ws.onmessage = (event) => {
-        console.log('Otrzymano dane: ', event.data);  // Dodaj logowanie dla otrzymanych danych
+        console.log('Otrzymano dane: ', event.data);
         const receivedData = JSON.parse(event.data);
         setData(receivedData);  // Aktualizujemy stan danymi z serwera
       };
-      
+    
+      // Obsługuje błędy WebSocket
       ws.onerror = (error) => {
         console.error('Błąd WebSocket:', error);
       };
-
+    
+      // Obsługuje zamknięcie połączenia
       ws.onclose = () => {
         console.log("Połączenie WebSocket zerwane, ponawiam próbę...");
         console.log("Stan połączenia: ", ws.readyState);
-        setTimeout(() => {
-          ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
-      }, 1000) // Próba ponownego połączenia po 5s
-      };
-
-      return ws; 
-
-    }, []);
+        clearInterval(pingInterval);  // Czyszczenie interwału pingów
     
+        // Próba ponownego połączenia po 5 sekundach
+        setTimeout(() => {
+          connectWebSocket();  // Ponowne wywołanie funkcji łączenia
+        }, 5000);
+      };
+    
+      // Obsługuje odpowiedź na ping (po stronie klienta)
+      ws.onmessage = (event) => {
+        if (event.data === 'pong') {
+          console.log('Otrzymano pong od serwera');
+          clearTimeout(pongTimeout);  // Resetujemy timeout
+        }
+      };
+    
+      // Wysyłanie pong, jeśli otrzymamy ping
+      ws.onmessage = (event) => {
+        if (event.data === 'ping') {
+          console.log('Otrzymano ping, wysyłam pong');
+          ws.send('pong');
+        }
+      };
+    
+      // Funkcja czyszcząca połączenie, kiedy komponent jest odmontowywany
+      return () => {
+        if (ws) {
+          clearInterval(pingInterval);  // Zatrzymanie interwału pingów
+          ws.close();  // Zamknięcie połączenia WebSocket
+          console.log('WebSocket zamknięty');
+        }
+      };
+    }, []);
+      
     useEffect(() => {
       const wss = connectWebSocket();
       
       // Cleanup funkcji w useEffect, aby zamknąć połączenie, gdy komponent zostanie odmontowany
       return () => {
-          if (wss) {
-              wss.close();
-              console.log('WebSocket zamknięty');
-          }
+        if (wss) {
+          wss();  // Zamknięcie połączenia i czyszczenie
+        }
       };
-  }, [connectWebSocket]); 
+    }, [connectWebSocket]);
+    
   
 
     const taskAdd_myzia = async (e) => {
