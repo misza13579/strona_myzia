@@ -14,7 +14,6 @@ const Points = () => {
     const connectWebSocket = useCallback(() => {
       let ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
       let pongTimeout;
-      const PONG_TIMEOUT = 5000; // 5 sekund na odpowiedź na ping
       const PING_INTERVAL = 30000; // Wysyłanie ping co 30 sekund
     
       // Funkcja do wysyłania ping
