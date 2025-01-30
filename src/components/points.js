@@ -16,7 +16,7 @@ const Points = () => {
       // Sprawdzamy, czy połączenie już istnieje
       if (!wsRef.current) {
         // Tworzymy nowe połączenie WebSocket, jeśli jeszcze nie istnieje
-        wsRef.current = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
+        wsRef.current = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/wss');
         const socket = wsRef.current;
   
         // Nasłuchiwanie na otwarcie połączenia
