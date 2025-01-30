@@ -33,14 +33,12 @@ const PointsTask = () => {
   return (
     <div>
       <ul>
-        {/* Sprawdzamy, czy mamy dane, zanim zaczniemy renderować */}
         {data && data.length > 0 ? (
           data.map((item, index) => (
             <li key={index}>
               <div className='bg-red-400 rounded flex items-center justify-center m-2 p-1 h-16 w-80'>
-                {/* Zmieniamy sposób wyświetlania treści zadania */}
                 <p className='border-5 w-8 h-14 m-2 text-2xl rounded-xl text-center border-red-500'>
-                  {item.tresc_myzio} {/* Zmieniamy na poprawną nazwę właściwości */}
+                  {item.tresc_myzio}
                 </p>
               </div>
             </li>
