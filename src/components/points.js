@@ -14,7 +14,7 @@ const Points = () => {
     
       useEffect(() => {
         // Utworzenie połączenia WebSocket
-        const socket = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws'); // Zastąp adres URL swoim
+        const socket = new WebSocket('wss://strona-myzia-backend-production.up.railway.app:3000/ws'); // Zastąp adres URL swoim
     
         // Nasłuchiwanie na otwarcie połączenia
         socket.onopen = () => {
