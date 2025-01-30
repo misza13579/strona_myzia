@@ -23,7 +23,7 @@ const Points = () => {
         };
     
         // Nasłuchiwanie na przychodzące wiadomości
-        ws.onmessage = (event) => {
+        socket.onmessage = (event) => {
           console.log('Otrzymano dane: ', event.data);
           const receivedData = JSON.parse(event.data);
           setData(receivedData);  // Aktualizujemy stan danymi z serwera
