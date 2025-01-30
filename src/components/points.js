@@ -8,90 +8,42 @@ const Points = () => {
     const [zadanie_myzia, setZadanie_myzia] = useState('');
     const [punkty_myzia, setPunkty_myzia] = useState(0);
     const [punkty_myzio, setPunkty_myzio] = useState(0);
-    const [data, setData] = useState({ myzia: 0, myzio: 0 });
-
-
-    const connectWebSocket = useCallback(() => {
-      let ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
-      let pongTimeout;
-      const PING_INTERVAL = 30000; // Wysyłanie ping co 30 sekund
+    const [connected, setConnected] = useState(false); // Stan połączenia
     
-      // Funkcja do wysyłania ping
-      const sendPing = () => {
-        if (ws.readyState === WebSocket.OPEN) {
-          ws.send('ping');  // Możesz wysłać niestandardowy ping
-          console.log('Wysyłam ping do serwera');
-        }
-      };
+      useEffect(() => {
+        // Utworzenie połączenia WebSocket
+        const socket = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws'); // Zastąp adres URL swoim
     
-      // Ustawienie interwału wysyłania pingów
-      const pingInterval = setInterval(sendPing, PING_INTERVAL);
+        // Nasłuchiwanie na otwarcie połączenia
+        socket.onopen = () => {
+          console.log('Połączenie WebSocket otwarte');
+          setConnected(true);
+        };
     
-      // Obsługuje otwarcie połączenia
-      ws.onopen = () => {
-        console.log('WebSocket połączony');
-      };
+        // Nasłuchiwanie na przychodzące wiadomości
+        socket.onmessage = (event) => {
+          console.log('Otrzymano wiadomość:', event.data);
+        };
     
-      // Obsługuje wiadomości od serwera
-      ws.onmessage = (event) => {
-        console.log('Otrzymano dane: ', event.data);
-        const receivedData = JSON.parse(event.data);
-        setData(receivedData);  // Aktualizujemy stan danymi z serwera
-      };
+        // Nasłuchiwanie na błędy połączenia
+        socket.onerror = (error) => {
+          console.error('Błąd WebSocket:', error);
+        };
     
-      // Obsługuje błędy WebSocket
-      ws.onerror = (error) => {
-        console.error('Błąd WebSocket:', error);
-      };
+        // Nasłuchiwanie na zamknięcie połączenia
+        socket.onclose = () => {
+          console.log('Połączenie WebSocket zamknięte');
+          setConnected(false);
+        };
     
-      // Obsługuje zamknięcie połączenia
-      ws.onclose = () => {
-        console.log("Połączenie WebSocket zerwane, ponawiam próbę...");
-        console.log("Stan połączenia: ", ws.readyState);
-        clearInterval(pingInterval);  // Czyszczenie interwału pingów
-    
-        // Próba ponownego połączenia po 5 sekundach
-        setTimeout(() => {
-          connectWebSocket();  // Ponowne wywołanie funkcji łączenia
-        }, 5000);
-      };
-    
-      // Obsługuje odpowiedź na ping (po stronie klienta)
-      ws.onmessage = (event) => {
-        if (event.data === 'pong') {
-          console.log('Otrzymano pong od serwera');
-          clearTimeout(pongTimeout);  // Resetujemy timeout
-        }
-      };
-    
-      // Wysyłanie pong, jeśli otrzymamy ping
-      ws.onmessage = (event) => {
-        if (event.data === 'ping') {
-          console.log('Otrzymano ping, wysyłam pong');
-          ws.send('pong');
-        }
-      };
-    
-      // Funkcja czyszcząca połączenie, kiedy komponent jest odmontowywany
-      return () => {
-        if (ws) {
-          clearInterval(pingInterval);  // Zatrzymanie interwału pingów
-          ws.close();  // Zamknięcie połączenia WebSocket
-          console.log('WebSocket zamknięty');
-        }
-      };
-    }, []);
-      
-    useEffect(() => {
-      const wss = connectWebSocket();
-      
-      // Cleanup funkcji w useEffect, aby zamknąć połączenie, gdy komponent zostanie odmontowany
-      return () => {
-        if (wss) {
-          wss();  // Zamknięcie połączenia i czyszczenie
-        }
-      };
-    }, [connectWebSocket]);
+        // Czyszczenie połączenia przy odmontowywaniu komponentu
+        return () => {
+          if (socket) {
+            socket.close();
+            console.log('Połączenie WebSocket zamknięte przy odmontowaniu');
+          }
+        };
+      }, []);
     
   
 
@@ -132,7 +84,7 @@ const Points = () => {
           
           <div className="flex items-center justify-center col-span-1">
           <div className="bg-red-200 h-32 w-64 rounded flex items-center justify-center">
-            <p className="font-medium text-3xl">Punkty myzia: </p>
+            <p className="font-medium text-3xl">Punkty myzia:{connected} </p>
             <p className="font-medium text-3xl">{data.myzia}</p>
           </div>
           </div>
