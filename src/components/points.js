@@ -15,6 +15,11 @@ const Points = () => {
     
       ws.onopen = () => {
         console.log(' WebSocket połączony');
+        setInterval(() => {
+          if (ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ type: "ping" }));
+          }
+        }, 5000); // Wysyłamy ping co 30 sekund
       };
   
       ws.onmessage = (event) => {
@@ -27,6 +32,9 @@ const Points = () => {
         console.log("Połączenie WebSocket zerwane, ponawiam próbę...");
         setTimeout(connectWebSocket, 5000); // Próba ponownego połączenia po 5s
       };
+
+      return () => ws.close();
+      
     }, []);
     
     useEffect(() => {
