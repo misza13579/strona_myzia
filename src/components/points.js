@@ -31,7 +31,9 @@ const Points = () => {
       ws.onclose = () => {
         console.log("Połączenie WebSocket zerwane, ponawiam próbę...");
         console.log("Stan połączenia: ", ws.readyState);
-        setTimeout(connectWebSocket, 5000); // Próba ponownego połączenia po 5s
+        setTimeout(() => {
+          ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
+      }, 1000) // Próba ponownego połączenia po 5s
       };
 
       return ws; 
@@ -39,12 +41,12 @@ const Points = () => {
     }, []);
     
     useEffect(() => {
-      const ws = connectWebSocket();
+      const wss = connectWebSocket();
       
       // Cleanup funkcji w useEffect, aby zamknąć połączenie, gdy komponent zostanie odmontowany
       return () => {
-          if (ws) {
-              ws.close();
+          if (wss) {
+              wss.close();
               console.log('WebSocket zamknięty');
           }
       };
