@@ -10,7 +10,7 @@ const Points = () => {
     const [data, setData] = useState({ myzia: 0, myzio: 0 });
 
 
-    const connectWebSocket = () => {
+    const connectWebSocket = useCallback(() => {
       const ws = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
     
       ws.onopen = () => {
@@ -27,11 +27,11 @@ const Points = () => {
         console.log("Połączenie WebSocket zerwane, ponawiam próbę...");
         setTimeout(connectWebSocket, 5000); // Próba ponownego połączenia po 5s
       };
-    };
+    });
     
     useEffect(() => {
       connectWebSocket();
-    }, []);
+    }, [connectWebSocket]);
   
 
     const taskAdd_myzia = async (e) => {
