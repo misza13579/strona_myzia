@@ -16,6 +16,9 @@ const PointsTask = () => {
   
       socketRef.current.on("task", (receivedData) => {
         console.log("📩 Otrzymano zadania:", receivedData);
+        console.log("Typ receivedData:", typeof receivedData);
+console.log("Czy to tablica?", Array.isArray(receivedData));
+console.log("receivedData:", receivedData);
   
         if (Array.isArray(receivedData)) {
           // Filtrowanie nieprawidłowych danych
