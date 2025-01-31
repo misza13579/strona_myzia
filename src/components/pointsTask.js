@@ -16,7 +16,7 @@ const PointsTask = () => {
 
       socketRef.current.on("task", (receivedData) => {
         console.log("📩 Otrzymano zadania:", receivedData);
-        setData(message);
+        setData(receivedData);
       });
 
       socketRef.current.on("connect_error", (error) => {
