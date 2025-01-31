@@ -16,13 +16,7 @@ const PointsTask = () => {
 
       socketRef.current.on("task", (receivedData) => {
         console.log("📩 Otrzymano zadania:", receivedData);
-
-        // Sprawdzamy, czy otrzymane dane są tablicą
-        if (Array.isArray(receivedData)) {
-          setData(receivedData); // Jeśli dane to tablica, ustawiamy ją w stanie
-        } else {
-          console.error("❌ Otrzymane dane nie są tablicą");
-        }
+        setData(message);
       });
 
       socketRef.current.on("connect_error", (error) => {
