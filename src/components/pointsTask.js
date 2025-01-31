@@ -7,8 +7,12 @@ const PointsTask = () => {
 
   useEffect(() => {
     // Połączenie z serwerem Socket.IO
-    socketRef.current = io('wss://strona-myzia-backend-production.up.railway.app', { transports: ['websocket'] });// Podaj odpowiedni adres URL serwera
-
+    socketRef.current = io("https://strona-myzia-backend-production.up.railway.app", {
+        transports: ["websocket"], // Wymusza użycie WebSocket
+        reconnection: true, // Włącza ponowne łączenie
+        reconnectionAttempts: 5, // Ile razy próbować połączyć
+        reconnectionDelay: 1000, // Czas między próbami
+      });
     // Nasłuchiwanie na dane z serwera
     socketRef.current.on('taskData', (receivedData) => {
       console.log('📩 Otrzymano zadania:', receivedData);
@@ -22,9 +26,10 @@ const PointsTask = () => {
 
     return () => {
       // Zamykanie połączenia przy unmountowaniu
-      if (socketRef.current) {
-        socketRef.current.disconnect();
-        console.log('🛑 Połączenie z Socket.IO rozłączone');
+        if (socketRef.current) {
+          socketRef.current.disconnect();
+          console.log('🛑 Połączenie z Socket.IO rozłączone');
+        }
       }
     };
   }, []);
