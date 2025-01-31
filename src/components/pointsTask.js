@@ -76,21 +76,24 @@ const PointsTask = (props) => {
     <div>
       <ul>
         {data.length > 0 ? (
-          data.map((item, index) => (
-            <li key={index} className="m-2">
-              <div className="bg-red-400 rounded flex items-center justify-center p-2 h-16 w-80">
-                <pre className="text-white font-bold">
-                  {item[`tresc_${props.osoba}`] ? item[`tresc_${props.osoba}`] : null}
-                </pre>
-              </div>
-            </li>
-          ))
+          data
+            .filter(item => item[`tresc_${props.osoba}`])  // Filtruj, aby usunąć puste obiekty
+            .map((item, index) => (
+              <li key={index} className="m-2">
+                <div className="bg-red-400 rounded flex items-center justify-center p-2 h-16 w-80">
+                  <pre className="text-white font-bold">
+                    {item[`tresc_${props.osoba}`]}  {/* Wyświetl tylko, jeśli jest dostępna */}
+                  </pre>
+                </div>
+              </li>
+            ))
         ) : (
           <li className="text-gray-600">Brak danych do wyświetlenia</li>
         )}
       </ul>
     </div>
   );
+  
   
 };
 export default PointsTask;

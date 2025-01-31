@@ -29,13 +29,13 @@ const Points = () => {
             socketRef.current.on("data", (message) => {
                 console.log("📩 Otrzymano dane:", message);
                 try {
-                    const parsedMessage = JSON.parse(message);
-                    setData(parsedMessage);
+                  const parsedMessage = JSON.parse(message);
+                  console.log("📩 Parsed message:", parsedMessage); // Dodatkowy log
+                  setData(parsedMessage);
                 } catch (error) {
-                    console.error("Błąd podczas parsowania JSON:", error);
+                  console.error("Błąd podczas parsowania JSON:", error);
                 }
-                
-            });
+              });
 
             socketRef.current.on("disconnect", (reason) => {
                 console.log("❌ Rozłączono:", reason);
