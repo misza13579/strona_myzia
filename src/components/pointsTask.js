@@ -2,14 +2,17 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const PointsTask = () => {
   const [data, setData] = useState([]);
-  const wsRef = useRef(null); // Przechowujemy referencję do WebSocketa
+  const wsRef = useRef(null);
+  const reconnectTimeout = useRef(null);
 
   useEffect(() => {
     const connectWebSocket = () => {
       if (wsRef.current) {
-        wsRef.current.close(); // Zamykamy stare połączenie, jeśli istnieje
+        console.log("🛑 Zamykam stare połączenie WebSocket...");
+        wsRef.current.close();
       }
 
+      console.log("🔄 Nawiązywanie nowego połączenia WebSocket...");
       wsRef.current = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/wsTask');
 
       wsRef.current.onopen = () => {
@@ -31,8 +34,8 @@ const PointsTask = () => {
       };
 
       wsRef.current.onclose = () => {
-        console.log("🔄 Połączenie WebSocket zerwane, ponawiam próbę...");
-        setTimeout(connectWebSocket, 5000); // Automatyczne ponowne połączenie po 5s
+        console.log("🔄 Połączenie WebSocket zerwane, ponawiam próbę za 5 sekund...");
+        reconnectTimeout.current = setTimeout(connectWebSocket, 5000);
       };
     };
 
@@ -40,9 +43,10 @@ const PointsTask = () => {
 
     return () => {
       if (wsRef.current) {
+        console.log("🛑 Zamykam WebSocket przy unmountowaniu");
         wsRef.current.close();
-        console.log('🛑 WebSocket zamknięty');
       }
+      clearTimeout(reconnectTimeout.current);
     };
   }, []);
 
