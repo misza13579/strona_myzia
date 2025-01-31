@@ -40,8 +40,7 @@ const Points = () => {
 
         return () => {
             if (wsRef.current) {
-                wsRef.current.onclose = null;
-            }
+                wsRef.current.onclose = null;}
         };
     }, []);
 

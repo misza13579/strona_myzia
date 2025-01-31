@@ -41,7 +41,6 @@ const PointsTask = () => {
     return () => {
       if (wsRef.current) {
         console.log("🛑 Zamykam WebSocket przy unmountowaniu");
-        wsRef.current.close();
         wsRef.current = null;
       }
       if (reconnectTimeout.current) {
