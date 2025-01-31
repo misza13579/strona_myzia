@@ -17,20 +17,13 @@ const PointsTask = () => {
       socketRef.current.on("task", (receivedData) => {
         console.log("📩 Otrzymano zadania:", receivedData);
 
-        // Walidujemy dane i usuwamy te, które mają puste lub null wartości
-        const filteredData = receivedData.map((item) => {
-            // Sprawdzenie i usunięcie pustych wartości
-            if (item.tresc_myzia && item.tresc_myzia.trim() === "") {
-              item.tresc_myzia = null; // Ustawienie wartości na null, jeśli jest pusta
-            }
-            if (item.tresc_myzio && item.tresc_myzio.trim() === "") {
-              item.tresc_myzio = null; // Ustawienie wartości na null, jeśli jest pusta
-            }
-            return item; // Zwrócenie zmodyfikowanego obiektu
-          }).filter(item => item.tresc_myzia || item.tresc_myzio); // Filtrowanie obiektów, które mają przynajmniej jedną niepustą wartość
-          
-        if (filteredData.length > 0) {
-          setData(filteredData);
+        // Jeśli dane to obiekty, wyświetlamy je w formacie JSON
+        const formattedData = receivedData.map((item) => {
+          return JSON.stringify(item, null, 2); // Formatujemy każdy obiekt jako JSON
+        });
+
+        if (formattedData.length > 0) {
+          setData(formattedData);
         } else {
           console.error("❌ Brak danych do wyświetlenia");
         }
@@ -65,9 +58,7 @@ const PointsTask = () => {
           data.map((item, index) => (
             <li key={index} className="m-2">
               <div className="bg-red-400 rounded flex items-center justify-center p-2 h-16 w-80">
-                <p className="text-white font-bold">
-                  {item.tresc_myzia || item.tresc_myzio || "Brak treści"}
-                </p>
+                <pre className="text-white font-bold">{item}</pre>
               </div>
             </li>
           ))
