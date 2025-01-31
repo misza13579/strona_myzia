@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import io from 'socket.io-client';
 import PointsTask from './pointsTask';
 
 const Points = () => {
@@ -9,42 +10,41 @@ const Points = () => {
     const [punkty_myzio, setPunkty_myzio] = useState(0);
     const [connected, setConnected] = useState(false);
     const [data, setData] = useState({ myzia: 0, myzio: 0 });
-    const wsRef = useRef(null);
+    const socketRef = useRef(null);
 
     useEffect(() => {
-        const connectWebSocket = () => {
-            wsRef.current = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/ws');
+        const connectSocket = () => {
+            // Połączenie do serwera z użyciem socket.io
+            socketRef.current = io('https://strona-myzia-backend-production.up.railway.app');
 
-            wsRef.current.onopen = () => {
+            socketRef.current.on('connect', () => {
                 console.log('Połączenie WebSocket otwarte');
                 setConnected(true);
-            };
+            });
 
-            wsRef.current.onmessage = (event) => {
-                console.log('Otrzymano dane:', event.data);
-                setData(JSON.parse(event.data));
-            };
+            socketRef.current.on('message', (message) => {
+                console.log('Otrzymano dane:', message);
+                setData(message); // Zakładając, że dane przychodzą w formacie JSON
+            });
 
-            wsRef.current.onerror = (error) => {
-                console.error('Błąd WebSocket:', error);
-            };
-
-            wsRef.current.onclose = () => {
+            socketRef.current.on('disconnect', () => {
                 console.log('Połączenie WebSocket zamknięte');
                 setConnected(false);
-                setTimeout(connectWebSocket, 5000); // 🔄 Automatyczna ponowna próba po 5s
-            };
+            });
+
+            socketRef.current.on('error', (error) => {
+                console.error('Błąd WebSocket:', error);
+            });
         };
 
-        connectWebSocket();
+        connectSocket();
 
         return () => {
-            if (wsRef.current) {
-                wsRef.current.onclose = null;}
+            if (socketRef.current) {
+                socketRef.current.disconnect(); // Zamknięcie połączenia przy unmountowaniu komponentu
+            }
         };
     }, []);
-
-
     const taskAdd_myzia = async (e) => {
       const token = localStorage.getItem('token');
       e.preventDefault();

@@ -1,51 +1,30 @@
 import React, { useState, useEffect, useRef } from 'react';
+import io from 'socket.io-client';
 
 const PointsTask = () => {
   const [data, setData] = useState([]);
-  const wsRef = useRef(null);
-  const reconnectTimeout = useRef(null);
+  const socketRef = useRef(null);
 
   useEffect(() => {
-    const connectWebSocket = () => {
+    // Połączenie z serwerem Socket.IO
+    socketRef.current = io('http://localhost:4000'); // Podaj odpowiedni adres URL serwera
 
+    // Nasłuchiwanie na dane z serwera
+    socketRef.current.on('taskData', (receivedData) => {
+      console.log('📩 Otrzymano zadania:', receivedData);
+      setData(receivedData);
+    });
 
-      console.log("🔄 Nawiązywanie nowego połączenia WebSocket...");
-      wsRef.current = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/wsTask');
-
-      wsRef.current.onopen = () => {
-        console.log('✅ WebSocket task połączony');
-      };
-
-      wsRef.current.onmessage = (event) => {
-        console.log('📩 Otrzymano zadania:', event.data);
-        try {
-          const receivedData = JSON.parse(event.data);
-          setData(receivedData);
-        } catch (error) {
-          console.error('❌ Błąd parsowania danych:', error);
-        }
-      };
-
-      wsRef.current.onerror = (error) => {
-        console.error('⚠️ WebSocket błąd:', error);
-      };
-
-      wsRef.current.onclose = () => {
-        console.log("🔄 Połączenie WebSocket zerwane, ponawiam próbę za 5 sekund...");
-        reconnectTimeout.current = setTimeout(connectWebSocket, 5000);
-      };
-    };
-
-    connectWebSocket();
+    // Obsługa błędów
+    socketRef.current.on('connect_error', (error) => {
+      console.error('Błąd połączenia:', error);
+    });
 
     return () => {
-      if (wsRef.current) {
-        console.log("🛑 Zamykam WebSocket przy unmountowaniu");
-        wsRef.current = null;
-      }
-      if (reconnectTimeout.current) {
-        clearTimeout(reconnectTimeout.current);
-        reconnectTimeout.current = null;
+      // Zamykanie połączenia przy unmountowaniu
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+        console.log('🛑 Połączenie z Socket.IO rozłączone');
       }
     };
   }, []);
