@@ -6,37 +6,29 @@ const PointsTask = () => {
   const socketRef = useRef(null);
 
   useEffect(() => {
-    // Upewnij się, że socketRef jest pusty przed nawiązaniem nowego połączenia
     if (!socketRef.current) {
       socketRef.current = io("https://strona-myzia-backend-production.up.railway.app", {
-        transports: ["websocket"], // Wymuszenie użycia WebSocket
-        reconnection: true, // Włączenie ponownego łączenia
-        reconnectionAttempts: 5, // Liczba prób ponownego połączenia
-        reconnectionDelay: 1000, // Opóźnienie między próbami
+        transports: ["websocket"],
+        reconnection: true,
+        reconnectionAttempts: 5,
+        reconnectionDelay: 1000,
       });
 
-      // Nasłuchiwanie na dane
       socketRef.current.on("task", (receivedData) => {
         console.log("📩 Otrzymano zadania:", receivedData);
 
-        // Sprawdzenie, czy dane są tablicą
-        if (Array.isArray(receivedData)) {
-          // Filtrujemy dane, aby usunąć te, które mają null lub puste wartości w "tresc_myzia"
-          const filteredData = receivedData.filter(
-            (item) => item.tresc_myzia && item.tresc_myzia.trim() !== ""
-          );
+        // Walidujemy dane i usuwamy te, które mają puste lub null wartości
+        const filteredData = Object.values(receivedData).filter(
+          (item) => item.tresc_myzia && item.tresc_myzia.trim() !== "" || item.tresc_myzio && item.tresc_myzio.trim() !== ""
+        );
 
-          if (filteredData.length > 0) {
-            setData(filteredData);
-          } else {
-            console.error("❌ Brak danych do wyświetlenia (wszystkie pola null lub puste)");
-          }
+        if (filteredData.length > 0) {
+          setData(filteredData);
         } else {
-          console.error("❌ Otrzymane dane mają niewłaściwy format:", receivedData);
+          console.error("❌ Brak danych do wyświetlenia");
         }
       });
 
-      // Obsługa błędów
       socketRef.current.on("connect_error", (error) => {
         console.error("🚨 Błąd połączenia:", error);
       });
@@ -51,7 +43,6 @@ const PointsTask = () => {
     }
 
     return () => {
-      // Zamknięcie połączenia przy odmontowaniu komponentu
       if (socketRef.current) {
         socketRef.current.disconnect();
         console.log("🛑 Połączenie WebSocket rozłączone");
