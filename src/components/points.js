@@ -15,8 +15,8 @@ const Points = () => {
     useEffect(() => {
         const connectSocket = () => {
             socketRef.current = io("https://strona-myzia-backend-production.up.railway.app", {
-                transports: ["websocket"], // Wymusza WebSocket
-                reconnection: true, // Pozwala na ponowne połączenie
+                transports: ["websocket"],
+                reconnection: true,
                 reconnectionAttempts: 5,
                 reconnectionDelay: 2000,
             });
@@ -26,9 +26,9 @@ const Points = () => {
                 setConnected(true);
             });
 
-            socketRef.current.on("data", (message) => { // <-- Upewnij się, że backend emituje event 'update'
+            socketRef.current.on("data", (message) => {
                 console.log("📩 Otrzymano dane:", message);
-                setData(message);
+                setData(JSON.parse(message));
             });
 
             socketRef.current.on("disconnect", (reason) => {
@@ -132,7 +132,10 @@ const Points = () => {
                           <button type="submit" className='bg-green-400 rounded w-24 h-14 text-xl m-2 p-2 text-zinc-200'>Dodaj</button>
                       </form>
                   </div>
-                  <PointsTask />
+                  {/* Kontener z przewijaniem */}
+                  <div className="flex-1 overflow-y-auto h-64 p-2">
+                      <PointsTask />
+                  </div>
               </div>
           </div>
         </div>
