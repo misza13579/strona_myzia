@@ -121,7 +121,7 @@ const Points = () => {
                   </div>
               </div>
           </div>
-
+          <p></p>
           {/* Formularz myzio */}
           <div className="flex items-center justify-center h-96 p-2 col-span-1 rows-span-2">
               <div className="bg-red-200 h-96 w-84 rounded flex flex-col rows-span-2">
