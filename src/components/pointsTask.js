@@ -78,6 +78,7 @@ const PointsTask = (props) => {
         {data.length > 0 ? (
           data
             .filter(item => item[`tresc_${props.osoba}`])  // Filtruj, aby usunąć puste obiekty
+            .reverse()  // Odwróć kolejność elementów
             .map((item, index) => (
               <li key={index} className="m-2">
                 <div className="bg-red-400 rounded flex items-center justify-center p-2 h-16 w-80">
@@ -93,6 +94,7 @@ const PointsTask = (props) => {
       </ul>
     </div>
   );
+  
   
   
 };
