@@ -21,10 +21,16 @@ const PointsTask = () => {
 
         // Sprawdzenie, czy dane są tablicą
         if (Array.isArray(receivedData)) {
-          setData(receivedData);
-        } else if (receivedData && typeof receivedData === "object") {
-          // Jeśli dane są obiektem, umieszczamy je w tablicy
-          setData([receivedData]);
+          // Usuwamy obiekty, które mają oba pola null lub pustą wartość
+          const filteredData = receivedData.filter(
+            (item) => item.tresc_myzia || item.tresc_myzio
+          );
+
+          if (filteredData.length > 0) {
+            setData(filteredData);
+          } else {
+            console.error("❌ Brak danych do wyświetlenia (wszystkie pola null lub puste)");
+          }
         } else {
           console.error("❌ Otrzymane dane mają niewłaściwy format:", receivedData);
         }
@@ -61,7 +67,9 @@ const PointsTask = () => {
           data.map((item, index) => (
             <li key={index} className="m-2">
               <div className="bg-red-400 rounded flex items-center justify-center p-2 h-16 w-80">
-                <p className="text-white font-bold">{item.tresc_myzio || "Brak treści"}</p>
+                <p className="text-white font-bold">
+                  {item.tresc_myzia || item.tresc_myzio || "Brak treści"}
+                </p>
               </div>
             </li>
           ))
