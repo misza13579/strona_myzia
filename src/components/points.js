@@ -103,19 +103,19 @@ const Points = () => {
           
           <div className="flex items-center justify-center col-span-1">
               <div className="bg-red-200 h-32 w-64 rounded flex items-center justify-center">
-                  <p className="font-medium text-3xl">Punkty myzia: {data[0].myzia}</p>
+                  <p className="font-medium text-3xl">Punkty myzia: {data[0]?.myzia}</p>
               </div>
           </div>
 
           <div className="flex items-center justify-center col-span-1">
               <div className="bg-red-200 h-32 w-64 rounded flex items-center justify-center">
-                  <p className="font-medium text-4xl">Status: {connected ? "🟢 Połączony" : "🔴 Rozłączony"}</p>
+                  <p className="font-medium text-4xl">Licznik punktów</p>
               </div>
           </div>
 
           <div className="flex items-center justify-center col-span-1">
               <div className="bg-red-200 h-32 w-64 rounded flex items-center justify-center">
-                  <p className="font-medium text-3xl">Punkty myzio: {data[0].myzia}</p>
+                  <p className="font-medium text-3xl">Punkty myzio: {data[0]?.myzio}</p>
               </div>
           </div>
 
