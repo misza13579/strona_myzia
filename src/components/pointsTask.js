@@ -19,9 +19,10 @@ const PointsTask = () => {
 
         // Walidujemy dane i usuwamy te, które mają puste lub null wartości
         const filteredData = Object.values(receivedData).filter(
-          (item) => item.tresc_myzia && item.tresc_myzia.trim() !== "" || item.tresc_myzio && item.tresc_myzio.trim() !== ""
-        );
-
+            (item) =>
+              (item.tresc_myzia && item.tresc_myzia.trim() !== "") ||
+              (item.tresc_myzio && item.tresc_myzio.trim() !== "")
+          );
         if (filteredData.length > 0) {
           setData(filteredData);
         } else {
