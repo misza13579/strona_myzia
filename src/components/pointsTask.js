@@ -31,8 +31,7 @@ const PointsTask = () => {
           console.log('🛑 Połączenie z Socket.IO rozłączone');
         }
       }
-    };
-  }, []);
+    }, []);
 
   return (
     <div>
