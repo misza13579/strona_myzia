@@ -26,7 +26,7 @@ const Points = () => {
                 setConnected(true);
             });
 
-            socketRef.current.on("update", (message) => { // <-- Upewnij się, że backend emituje event 'update'
+            socketRef.current.on("data", (message) => { // <-- Upewnij się, że backend emituje event 'update'
                 console.log("📩 Otrzymano dane:", message);
                 setData(message);
             });

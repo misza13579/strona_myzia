@@ -16,7 +16,7 @@ const PointsTask = () => {
       });
 
       // Nasłuchiwanie na dane
-      socketRef.current.on("taskData", (receivedData) => {
+      socketRef.current.on("task", (receivedData) => {
         console.log("📩 Otrzymano zadania:", receivedData);
 
         // Zapewniamy, że receivedData to tablica
