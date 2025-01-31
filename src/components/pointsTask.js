@@ -19,11 +19,14 @@ const PointsTask = () => {
       socketRef.current.on("task", (receivedData) => {
         console.log("📩 Otrzymano zadania:", receivedData);
 
-        // Zapewniamy, że receivedData to tablica
+        // Sprawdzenie, czy dane są tablicą
         if (Array.isArray(receivedData)) {
           setData(receivedData);
+        } else if (receivedData && typeof receivedData === "object") {
+          // Jeśli dane są obiektem, umieszczamy je w tablicy
+          setData([receivedData]);
         } else {
-          console.error("❌ Otrzymane dane nie są tablicą:", receivedData);
+          console.error("❌ Otrzymane dane mają niewłaściwy format:", receivedData);
         }
       });
 
@@ -58,7 +61,7 @@ const PointsTask = () => {
           data.map((item, index) => (
             <li key={index} className="m-2">
               <div className="bg-red-400 rounded flex items-center justify-center p-2 h-16 w-80">
-                <p className="text-white font-bold">{item.tresc_myzio}</p>
+                <p className="text-white font-bold">{item.tresc_myzio || "Brak treści"}</p>
               </div>
             </li>
           ))
