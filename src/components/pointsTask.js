@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 
 const PointsTask = () => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
   const socketRef = useRef(null);
 
   useEffect(() => {
@@ -17,11 +17,11 @@ const PointsTask = () => {
       socketRef.current.on("task", (receivedData) => {
         console.log("📩 Otrzymano zadania:", receivedData);
 
-        // Sprawdzamy, czy otrzymane dane są obiektem
-        if (typeof receivedData === 'object' && !Array.isArray(receivedData)) {
-          setData(receivedData); // Jeśli dane to obiekt, ustawiamy je w stanie
+        // Sprawdzamy, czy otrzymane dane są tablicą
+        if (Array.isArray(receivedData)) {
+          setData(receivedData); // Jeśli dane to tablica, ustawiamy ją w stanie
         } else {
-          console.error("❌ Otrzymane dane nie są obiektem");
+          console.error("❌ Otrzymane dane nie są tablicą");
         }
       });
 
@@ -50,13 +50,13 @@ const PointsTask = () => {
   return (
     <div>
       <ul>
-        {Object.entries(data).length > 0 ? (
-          // Iteracja po obiekcie za pomocą Object.entries
-          Object.entries(data).map(([key, value], index) => (
+        {data.length > 0 ? (
+          // Iteracja po tablicy za pomocą map
+          data.map((item, index) => (
             <li key={index} className="m-2">
               <div className="bg-red-400 rounded flex items-center justify-center p-2 h-16 w-80">
                 <pre className="text-white font-bold">
-                  {key}: {JSON.stringify(value, null, 2)}
+                  {JSON.stringify(item, null, 2)}
                 </pre>
               </div>
             </li>
