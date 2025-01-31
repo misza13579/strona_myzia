@@ -125,6 +125,7 @@ const Points = () => {
                           <button type="submit" className='bg-green-400 rounded w-24 h-14 text-xl m-2 p-2 text-zinc-200'>Dodaj</button>
                       </form>
                   </div>
+                  <PointsTask osoba="myzia" />
               </div>
           </div>
           <p></p>
@@ -140,7 +141,7 @@ const Points = () => {
                   </div>
                   {/* Kontener z przewijaniem */}
                   <div className="flex-1 overflow-y-auto h-64 p-2">
-                      <PointsTask />
+                      <PointsTask osoba="myzio" />
                   </div>
               </div>
           </div>

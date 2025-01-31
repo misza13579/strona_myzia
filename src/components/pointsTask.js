@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 
-const PointsTask = () => {
+const PointsTask = (props) => {
   const [data, setData] = useState([]);
   const socketRef = useRef(null);
 
@@ -80,9 +80,7 @@ const PointsTask = () => {
             <li key={index} className="m-2">
               <div className="bg-red-400 rounded flex items-center justify-center p-2 h-16 w-80">
                 <pre className="text-white font-bold">
-                  {item.tresc_myzia ? `Tresc Myzia: ${item.tresc_myzia}` : "Brak tresci myzia"}
-                  <br />
-                  {item.tresc_myzio ? `Tresc Myzio: ${item.tresc_myzio}` : "Brak tresci myzio"}
+                { item[`tresc_${props.osoba}`] ? `Tresc ${props.osoba}: ${item[`tresc_${props.osoba}`]}` : `Brak tresci ${props.osoba}!`}
                 </pre>
               </div>
             </li>
