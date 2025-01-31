@@ -44,7 +44,7 @@ const PointsTask = () => {
       }
     };
   }, []);
-};
+
   return (
     <div>
       <ul>
@@ -67,6 +67,6 @@ const PointsTask = () => {
       </ul>
     </div>
   );
-  
+};  
 
 export default PointsTask;
