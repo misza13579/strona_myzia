@@ -14,12 +14,12 @@ const PointsTask = () => {
         reconnectionDelay: 1000,
       });
   
-      socketRef.current.on("task", (receivedData) => {
+      socketRef.current.on("task", (receivedData1) => {
         console.log("📩 Otrzymano zadania:", receivedData);
         console.log("Typ receivedData:", typeof receivedData);
 console.log("Czy to tablica?", Array.isArray(receivedData));
 console.log("receivedData:", receivedData);
-  
+const receivedData = JSON.parse(receivedData1);
         if (Array.isArray(receivedData)) {
           // Filtrowanie nieprawidłowych danych
           const filteredData = receivedData.filter(
