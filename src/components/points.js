@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import PointsTask from './pointsTask';
 
 const Points = () => {
@@ -14,26 +14,30 @@ const Points = () => {
 
     useEffect(() => {
         const connectSocket = () => {
-            // Połączenie do serwera z użyciem socket.io
-            socketRef.current = io('wss://strona-myzia-backend-production.up.railway.app', { transports: ['websocket'] });
+            socketRef.current = io("https://strona-myzia-backend-production.up.railway.app", {
+                transports: ["websocket"], // Wymusza WebSocket
+                reconnection: true, // Pozwala na ponowne połączenie
+                reconnectionAttempts: 5,
+                reconnectionDelay: 2000,
+            });
 
-            socketRef.current.on('connect', () => {
-                console.log('Połączenie WebSocket otwarte');
+            socketRef.current.on("connect", () => {
+                console.log("✅ Połączono z Socket.IO!");
                 setConnected(true);
             });
 
-            socketRef.current.on('message', (message) => {
-                console.log('Otrzymano dane:', message);
-                setData(message); // Zakładając, że dane przychodzą w formacie JSON
+            socketRef.current.on("update", (message) => { // <-- Upewnij się, że backend emituje event 'update'
+                console.log("📩 Otrzymano dane:", message);
+                setData(message);
             });
 
-            socketRef.current.on('disconnect', () => {
-                console.log('Połączenie WebSocket zamknięte');
+            socketRef.current.on("disconnect", (reason) => {
+                console.log("❌ Rozłączono:", reason);
                 setConnected(false);
             });
 
-            socketRef.current.on('error', (error) => {
-                console.error('Błąd WebSocket:', error);
+            socketRef.current.on("connect_error", (error) => {
+                console.error("❌ Błąd połączenia WebSocket:", error);
             });
         };
 
@@ -41,91 +45,96 @@ const Points = () => {
 
         return () => {
             if (socketRef.current) {
-                socketRef.current.disconnect(); // Zamknięcie połączenia przy unmountowaniu komponentu
+                socketRef.current.disconnect();
             }
         };
     }, []);
+
     const taskAdd_myzia = async (e) => {
-      const token = localStorage.getItem('token');
-      e.preventDefault();
-  
+        e.preventDefault();
+        const token = localStorage.getItem('token');
+
         try {
-          const response = await axios.post(`https://strona-myzia-backend-production.up.railway.app/points/add_myzia`, {zadanie_myzia, punkty_myzia },    
-          {headers: {'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        }});
-        console.log('zadanie dodane', response);
-      } catch (err) {
-        console.error('Wystąpił błąd', err);
-      }
+            const response = await axios.post("https://strona-myzia-backend-production.up.railway.app/points/add_myzia",
+                { zadanie_myzia, punkty_myzia },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    }
+                });
+            console.log('✅ Zadanie dodane', response.data);
+        } catch (err) {
+            console.error('❌ Wystąpił błąd', err);
+        }
     };
 
     const taskAdd_myzio = async (e) => {
-      const token = localStorage.getItem('token');
-      e.preventDefault();
-  
+        e.preventDefault();
+        const token = localStorage.getItem('token');
+
         try {
-          const response = await axios.post(`https://strona-myzia-backend-production.up.railway.app/points/add_myzio`, {zadanie_myzio, punkty_myzio },    
-          {headers: {'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        }});
-        console.log('zadanie dodane', response);
-      } catch (err) {
-        console.error('Wystąpił błąd', err);
-      }
+            const response = await axios.post("https://strona-myzia-backend-production.up.railway.app/points/add_myzio",
+                { zadanie_myzio, punkty_myzio },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    }
+                });
+            console.log('✅ Zadanie dodane', response.data);
+        } catch (err) {
+            console.error('❌ Wystąpił błąd', err);
+        }
     };
- 
- 
 
     return (
         <div className="grid grid-cols-3 grid-rows-3 font-myzia gap-3 h-[90%] justify-center rounded m-10 p-3 bg-red-300">
           
           <div className="flex items-center justify-center col-span-1">
-          <div className="bg-red-200 h-32 w-64 rounded flex items-center justify-center">
-            <p className="font-medium text-3xl">Punkty myzia:{data.myzia} </p>
-            <p className="font-medium text-3xl"></p>
-          </div>
+              <div className="bg-red-200 h-32 w-64 rounded flex items-center justify-center">
+                  <p className="font-medium text-3xl">Punkty myzia: {data.myzia}</p>
+              </div>
           </div>
 
           <div className="flex items-center justify-center col-span-1">
-          <div className="bg-red-200 h-32 w-64 rounded flex items-center justify-center">
-            <p className="font-medium text-4xl">Licznik punktów{connected}</p>
+              <div className="bg-red-200 h-32 w-64 rounded flex items-center justify-center">
+                  <p className="font-medium text-4xl">Status: {connected ? "🟢 Połączony" : "🔴 Rozłączony"}</p>
+              </div>
           </div>
 
-          </div>
           <div className="flex items-center justify-center col-span-1">
-          <div className="bg-red-200 h-32 w-64 rounded flex items-center justify-center">
-          <p className="font-medium text-3xl font-myzia">Punkty myzio:{data.myzio} </p>
-          <p className="font-medium text-3xl font-myzia"></p>
+              <div className="bg-red-200 h-32 w-64 rounded flex items-center justify-center">
+                  <p className="font-medium text-3xl">Punkty myzio: {data.myzio}</p>
+              </div>
           </div>
-          </div>
-    
+
+          {/* Formularz myzia */}
           <div className="flex items-center justify-center h-96 col-span-1 rows-span-2">
-            <div className="bg-red-200 h-96 w-84 rounded flex justify-center rows-span-2">
-              <div className='bg-red-400 h-16 w-80 m-2 p-1 rounded flex items-center justify-center'>
-                <form onSubmit={taskAdd_myzia} className='flex items-center justify-center  m-2 p-1 h-16 w-80'>
-                <textarea type="text" placeholder="Zadanie" onChange={(e) => setZadanie_myzia(e.target.value)} className='border-5 w-48 h-12 m-1 rounded text-s border-red-500'></textarea>
-                <input type="text" placeholder="" onChange={(e) => setPunkty_myzia(e.target.value)} className='border-5 w-8 h-14 m-2 text-2xl rounded-xl text-center border-red-500'></input>
-                <button type="submit" className='bg-green-400 rounded w-24 h-14 text-xl m-2 p-2 text-zinc-200 font-myzia'>Dodaj</button>
-                </form>
+              <div className="bg-red-200 h-96 w-84 rounded flex justify-center rows-span-2">
+                  <div className='bg-red-400 h-16 w-80 m-2 p-1 rounded flex items-center justify-center'>
+                      <form onSubmit={taskAdd_myzia} className='flex items-center justify-center m-2 p-1 h-16 w-80'>
+                          <textarea placeholder="Zadanie" onChange={(e) => setZadanie_myzia(e.target.value)} className='border-5 w-48 h-12 m-1 rounded text-s border-red-500'></textarea>
+                          <input type="number" placeholder="" onChange={(e) => setPunkty_myzia(e.target.value)} className='border-5 w-8 h-14 m-2 text-2xl rounded-xl text-center border-red-500'></input>
+                          <button type="submit" className='bg-green-400 rounded w-24 h-14 text-xl m-2 p-2 text-zinc-200'>Dodaj</button>
+                      </form>
+                  </div>
               </div>
-            </div>
-          </div>  
+          </div>
 
-            <p></p>
-
+          {/* Formularz myzio */}
           <div className="flex items-center justify-center h-96 p-2 col-span-1 rows-span-2">
-            <div className="bg-red-200 h-96 w-84 rounded flex flex-col rows-span-2">
-              <div className='bg-red-400 h-16 w-80 m-2 p-1 rounded flex items-center justify-center'>
-                <form onSubmit={taskAdd_myzio} className='flex items-center justify-center  m-2 p-1 h-16 w-80'>
-                <textarea type="text" placeholder="Zadanie" onChange={(e) => setZadanie_myzio(e.target.value)} className='border-5 w-48 h-12 m-1 rounded text-s border-red-500'></textarea>
-                <input type="text" placeholder="" onChange={(e) => setPunkty_myzio(e.target.value)} className='border-5 w-8 h-14 m-2 text-2xl rounded-xl text-center border-red-500'></input>
-                <button type="submit" className='bg-green-400 rounded w-24 h-14 text-xl m-2 p-2 text-zinc-200 font-myzia'>Dodaj</button>
-                </form>
+              <div className="bg-red-200 h-96 w-84 rounded flex flex-col rows-span-2">
+                  <div className='bg-red-400 h-16 w-80 m-2 p-1 rounded flex items-center justify-center'>
+                      <form onSubmit={taskAdd_myzio} className='flex items-center justify-center m-2 p-1 h-16 w-80'>
+                          <textarea placeholder="Zadanie" onChange={(e) => setZadanie_myzio(e.target.value)} className='border-5 w-48 h-12 m-1 rounded text-s border-red-500'></textarea>
+                          <input type="number" placeholder="" onChange={(e) => setPunkty_myzio(e.target.value)} className='border-5 w-8 h-14 m-2 text-2xl rounded-xl text-center border-red-500'></input>
+                          <button type="submit" className='bg-green-400 rounded w-24 h-14 text-xl m-2 p-2 text-zinc-200'>Dodaj</button>
+                      </form>
+                  </div>
+                  <PointsTask />
               </div>
-              <PointsTask />
-            </div>
-          </div> 
+          </div>
         </div>
     );
 };
