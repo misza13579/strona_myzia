@@ -21,15 +21,15 @@ const PointsTask = () => {
 
         // Sprawdzenie, czy dane są tablicą
         if (Array.isArray(receivedData)) {
-          // Usuwamy obiekty, które mają oba pola null lub pustą wartość
+          // Filtrowanie tylko tych z 'tresc_myzia', które nie są null ani puste
           const filteredData = receivedData.filter(
-            (item) => item.tresc_myzia || item.tresc_myzio
+            (item) => item.tresc_myzia && item.tresc_myzia !== null && item.tresc_myzia !== ""
           );
 
           if (filteredData.length > 0) {
             setData(filteredData);
           } else {
-            console.error("❌ Brak danych do wyświetlenia (wszystkie pola null lub puste)");
+            console.error("❌ Brak danych do wyświetlenia (wszystkie pola 'tresc_myzia' są puste lub null)");
           }
         } else {
           console.error("❌ Otrzymane dane mają niewłaściwy format:", receivedData);
@@ -68,7 +68,7 @@ const PointsTask = () => {
             <li key={index} className="m-2">
               <div className="bg-red-400 rounded flex items-center justify-center p-2 h-16 w-80">
                 <p className="text-white font-bold">
-                  {item.tresc_myzia || item.tresc_myzio || "Brak treści"}
+                  {item.tresc_myzia || "Brak treści"}
                 </p>
               </div>
             </li>
