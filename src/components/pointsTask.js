@@ -7,10 +7,7 @@ const PointsTask = () => {
 
   useEffect(() => {
     const connectWebSocket = () => {
-      if (wsRef.current) {
-        console.log("🛑 Zamykam stare połączenie WebSocket...");
-        wsRef.current.close();
-      }
+
 
       console.log("🔄 Nawiązywanie nowego połączenia WebSocket...");
       wsRef.current = new WebSocket('wss://strona-myzia-backend-production.up.railway.app/wsTask');
