@@ -7,7 +7,7 @@ const PointsTask = () => {
 
   useEffect(() => {
     // Połączenie z serwerem Socket.IO
-    socketRef.current = io('https://strona-myzia-backend-production.up.railway.app'); // Podaj odpowiedni adres URL serwera
+    socketRef.current = io('wss://stronamyzia-production.up.railway.app', { transports: ['websocket'] });// Podaj odpowiedni adres URL serwera
 
     // Nasłuchiwanie na dane z serwera
     socketRef.current.on('taskData', (receivedData) => {

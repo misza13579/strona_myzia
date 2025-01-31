@@ -15,7 +15,7 @@ const Points = () => {
     useEffect(() => {
         const connectSocket = () => {
             // Połączenie do serwera z użyciem socket.io
-            socketRef.current = io('https://strona-myzia-backend-production.up.railway.app');
+            socketRef.current = io('wss://stronamyzia-production.up.railway.app', { transports: ['websocket'] });
 
             socketRef.current.on('connect', () => {
                 console.log('Połączenie WebSocket otwarte');
