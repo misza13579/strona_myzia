@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 
 const PointsTask = () => {
-  const [data, setData] = useState({ tresc_myzia:"", tresc_myzio:"" });
+  const [data, setData] = useState([{ tresc_myzia:"", tresc_myzio:""}]);
   const socketRef = useRef(null);
 
   useEffect(() => {
@@ -16,7 +16,11 @@ const PointsTask = () => {
 
       socketRef.current.on("task", (receivedData) => {
         console.log("📩 Otrzymano zadania:", receivedData);
-        setData(receivedData);
+        if (typeof receivedData === 'object' && receivedData !== null) {
+          setData(receivedData);
+        } else {
+          console.error("🚨 Otrzymano nieprawidłowe dane:", receivedData);
+        }
       });
 
       socketRef.current.on("connect_error", (error) => {
@@ -40,17 +44,19 @@ const PointsTask = () => {
       }
     };
   }, []);
-
+};
   return (
     <div>
       <ul>
-        {Object.keys(data).length > 0 ? (
-          // Iteracja po obiekcie za pomocą Object.entries
-          Object.entries(data).map(([key, value], index) => (
+        {data.length > 0 ? (
+          // Iteracja po tablicy za pomocą .map()
+          data.map((item, index) => (
             <li key={index} className="m-2">
               <div className="bg-red-400 rounded flex items-center justify-center p-2 h-16 w-80">
                 <pre className="text-white font-bold">
-                  {key}: {JSON.stringify(value, null, 2)}
+                  {item.tresc_myzia ? `Tresc Myzia: ${item.tresc_myzia}` : "Brak tresci myzia"} 
+                  <br />
+                  {item.tresc_myzio ? `Tresc Myzio: ${item.tresc_myzio}` : "Brak tresci myzio"}
                 </pre>
               </div>
             </li>
@@ -61,6 +67,6 @@ const PointsTask = () => {
       </ul>
     </div>
   );
-};
+  
 
 export default PointsTask;
