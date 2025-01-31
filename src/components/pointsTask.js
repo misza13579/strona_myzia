@@ -18,11 +18,17 @@ const PointsTask = () => {
         console.log("📩 Otrzymano zadania:", receivedData);
 
         // Walidujemy dane i usuwamy te, które mają puste lub null wartości
-        const filteredData = Object.values(receivedData).filter(
-            (item) =>
-              (item.tresc_myzia && item.tresc_myzia.trim() !== "") ||
-              (item.tresc_myzio && item.tresc_myzio.trim() !== "")
-          );
+        const filteredData = receivedData.map((item) => {
+            // Sprawdzenie i usunięcie pustych wartości
+            if (item.tresc_myzia && item.tresc_myzia.trim() === "") {
+              item.tresc_myzia = null; // Ustawienie wartości na null, jeśli jest pusta
+            }
+            if (item.tresc_myzio && item.tresc_myzio.trim() === "") {
+              item.tresc_myzio = null; // Ustawienie wartości na null, jeśli jest pusta
+            }
+            return item; // Zwrócenie zmodyfikowanego obiektu
+          }).filter(item => item.tresc_myzia || item.tresc_myzio); // Filtrowanie obiektów, które mają przynajmniej jedną niepustą wartość
+          
         if (filteredData.length > 0) {
           setData(filteredData);
         } else {
