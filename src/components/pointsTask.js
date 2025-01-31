@@ -80,7 +80,7 @@ const PointsTask = (props) => {
             <li key={index} className="m-2">
               <div className="bg-red-400 rounded flex items-center justify-center p-2 h-16 w-80">
                 <pre className="text-white font-bold">
-                { item[`tresc_${props.osoba}`] ? `Tresc ${props.osoba}: ${item[`tresc_${props.osoba}`]}` : `Brak tresci ${props.osoba}!`}
+                  {item[`tresc_${props.osoba}`] ? item[`tresc_${props.osoba}`] : null}
                 </pre>
               </div>
             </li>
@@ -91,6 +91,6 @@ const PointsTask = (props) => {
       </ul>
     </div>
   );
+  
 };
-
 export default PointsTask;

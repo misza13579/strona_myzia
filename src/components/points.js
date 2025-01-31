@@ -117,7 +117,7 @@ const Points = () => {
 
           {/* Formularz myzia */}
           <div className="flex items-center justify-center h-96 col-span-1 rows-span-2">
-              <div className="bg-red-200 h-96 w-84 rounded flex justify-center rows-span-2">
+              <div className="bg-red-200 h-96 w-84 rounded flex flex-col rows-span-2">
                   <div className='bg-red-400 h-16 w-80 m-2 p-1 rounded flex items-center justify-center'>
                       <form onSubmit={taskAdd_myzia} className='flex items-center justify-center m-2 p-1 h-16 w-80'>
                           <textarea placeholder="Zadanie" onChange={(e) => setZadanie_myzia(e.target.value)} className='border-5 w-48 h-12 m-1 rounded text-s border-red-500'></textarea>
